@@ -1,3 +1,4 @@
+import 'package:cinemapedia_flutter/config/enviroment/enviroment.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -11,7 +12,8 @@ class HomeScreen extends StatelessWidget {
         title: Text('Home Screen'),
       ),
       body: Center(
-        child: Text('Welcome to Cinemapedia Mobile App'),
+        child: Text(
+            'Welcome to Cinemapedia Mobile App in Enviroment ${Enviroment.env}, running in port ${Enviroment.port} and ${Enviroment.theMovieDBKey}'),
       ),
     );
   }

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:cinemapedia_flutter/config/router/app_router.dart';
 import 'package:cinemapedia_flutter/config/config/app_theme.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load(fileName: '.env', mergeWith: {
+    'ENV': 'dev',
+  });
   runApp(const MainApp());
 }
 
@@ -16,7 +20,7 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Cinemapedia Mobile App',
       routerConfig: appRouter,
-      theme: AppTheme( selectedColor: 0, isDarkMode: false).getTheme(),
+      theme: AppTheme(selectedColor: 0, isDarkMode: false).getTheme(),
     );
   }
 }
