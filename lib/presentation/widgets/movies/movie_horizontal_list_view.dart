@@ -33,7 +33,6 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
 
       if ((scrollController.position.pixels + 200) >=
           scrollController.position.maxScrollExtent) {
-        print('LOAD NEXT MOVIES**********');
         widget.loadNextPage!();
       }
     });
@@ -92,7 +91,6 @@ class _Title extends StatelessWidget {
                 onPressed: () {},
                 child: Text(
                   subtitle!,
-                  style: titleStyle,
                 ))
         ],
       ),
