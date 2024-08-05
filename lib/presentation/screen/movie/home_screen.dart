@@ -42,16 +42,18 @@ class _HomeViewState extends ConsumerState<_HomeView> {
   @override
   Widget build(BuildContext context) {
     print('Rederizo HOME!!!!');
+    final initialLoading = ref.watch(initialLoadingProvider);
+
+    if (initialLoading) {
+      return const FullScreenLoader();
+    }
+
     final playingMovies = ref.watch(nowPlayingMoviesProvider);
     final playingMoviesSlide = ref.watch(moviesSlideshowProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
     final upComingMovies = ref.watch(upcomingMoviesProvider);
     final prefs = ref.read(sharedPreferencesProvider.future);
-
-    return FullScreenLoader();
-
-    // add loading
 
     return CustomScrollView(
       slivers: [
