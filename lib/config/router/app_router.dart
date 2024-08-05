@@ -1,3 +1,4 @@
+import 'package:cinemapedia_flutter/presentation/screen/movie/movie_screen.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/shared_preferences/shared_preferences_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemapedia_flutter/presentation/screen/screens.dart';
@@ -11,6 +12,18 @@ GoRouter createAppRouter(ProviderContainer container) {
         path: '/',
         name: HomeScreen.name,
         builder: (context, state) => const HomeScreen(),
+      ),
+      GoRoute(
+        path: '/movie/:mid',
+        name: MovieScreen.name,
+        builder: (context, state) {
+          print(
+              'STATE: ${state.name} ${state.pageKey} ${state.path} ${state.pathParameters}');
+
+          return MovieScreen(
+            movieId: state.pathParameters['mid']!,
+          );
+        },
       ),
       GoRoute(
         path: '/categories',

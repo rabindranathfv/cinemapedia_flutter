@@ -75,6 +75,15 @@ class _HomeViewState extends ConsumerState<_HomeView> {
                 },
                 child: const Text('MARKS HOME'),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/movie/10');
+                },
+                child: const Text('movie details'),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               MoviesSlideshow(movies: playingMoviesSlide),
               MovieHorizontalListView(
                 movies: playingMovies,
