@@ -49,6 +49,8 @@ class _HomeViewState extends ConsumerState<_HomeView> {
     final upComingMovies = ref.watch(upcomingMoviesProvider);
     final prefs = ref.read(sharedPreferencesProvider.future);
 
+    return FullScreenLoader();
+
     // add loading
 
     return CustomScrollView(
