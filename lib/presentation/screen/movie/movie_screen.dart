@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:cinemapedia_flutter/domain/entities/actor.dart';
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -80,7 +80,15 @@ class _MovieDetails extends StatelessWidget {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
-                child: Image.network(movie.posterPath, width: size.width * 0.3),
+                child: Image.network(
+                  movie.posterPath,
+                  width: size.width * 0.3,
+                  fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress != null) return SizedBox();
+                    return FadeIn(child: child);
+                  },
+                ),
               ),
               const SizedBox(width: 10),
               SizedBox(
@@ -95,8 +103,20 @@ class _MovieDetails extends StatelessWidget {
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 5),
                           child: Text(
-                            'Original Language: ${movie.originalLanguage}',
+                            'Original Language: ${movie.originalLanguage.toUpperCase()}',
                           ),
+                        ),
+                        const SizedBox(width: 10),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.group,
+                              color: Colors.blue,
+                              size: 16,
+                            ),
+                            const SizedBox(width: 4),
+                            Text('${(movie.popularity / 2).toInt()}'),
+                          ],
                         ),
                       ],
                     ),
@@ -142,7 +162,6 @@ class _ActorsByMovie extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('Loading actors for movieId: $movieId');
     final actors = ref.watch(actorsByMovieProvider);
 
     if (actors[movieId] == null) {
