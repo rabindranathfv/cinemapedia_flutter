@@ -20,9 +20,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _HomeView extends ConsumerStatefulWidget {
-  const _HomeView({
-    super.key,
-  });
+  const _HomeView({super.key});
 
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -59,72 +57,54 @@ class _HomeViewState extends ConsumerState<_HomeView> {
       slivers: [
         const SliverAppBar(
           floating: true,
-          flexibleSpace: FlexibleSpaceBar(
-            title: CustomAppbar(),
-          ),
+          flexibleSpace: FlexibleSpaceBar(title: CustomAppbar()),
         ),
         SliverList(
-            delegate: SliverChildBuilderDelegate((context, index) {
-          return Column(
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  prefs.then((prefs) {
-                    prefs.setBool('isFirstTime', true);
-                  });
-                },
-                child: const Text('MARKS HOME'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  context.go('/movie/10');
-                },
-                child: const Text('movie details'),
-              ),
-              const SizedBox(
-                height: 5,
-              ),
-              MoviesSlideshow(movies: playingMoviesSlide),
-              MovieHorizontalListView(
-                movies: playingMovies,
-                title: 'In Cinemas',
-                subtitle: 'Top Movies',
-                loadNextPage: () =>
-                    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-              ),
-              MovieHorizontalListView(
-                movies: upComingMovies,
-                title: 'Comming Soon',
-                subtitle: 'The next Month',
-                loadNextPage: () =>
-                    ref.read(upcomingMoviesProvider.notifier).loadNextPage(),
-              ),
-              MovieHorizontalListView(
-                movies: popularMovies,
-                title: 'Popular',
-                loadNextPage: () =>
-                    ref.read(popularMoviesProvider.notifier).loadNextPage(),
-              ),
-              MovieHorizontalListView(
-                movies: topRatedMovies,
-                title: 'Best calification',
-                subtitle: 'from all times',
-                loadNextPage: () =>
-                    ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  context.go('/categories');
-                },
-                child: const Text('GO TO CATEGORIES'),
-              ),
-              const SizedBox(height: 40),
-            ],
-          );
-        }, childCount: 1))
+          delegate: SliverChildBuilderDelegate((context, index) {
+            return Column(
+              children: [
+                const SizedBox(height: 5),
+                MoviesSlideshow(movies: playingMoviesSlide),
+                MovieHorizontalListView(
+                  movies: playingMovies,
+                  title: 'In Cinemas',
+                  subtitle: 'Top Movies',
+                  loadNextPage: () => ref
+                      .read(nowPlayingMoviesProvider.notifier)
+                      .loadNextPage(),
+                ),
+                MovieHorizontalListView(
+                  movies: upComingMovies,
+                  title: 'Comming Soon',
+                  subtitle: 'The next Month',
+                  loadNextPage: () =>
+                      ref.read(upcomingMoviesProvider.notifier).loadNextPage(),
+                ),
+                MovieHorizontalListView(
+                  movies: popularMovies,
+                  title: 'Popular',
+                  loadNextPage: () =>
+                      ref.read(popularMoviesProvider.notifier).loadNextPage(),
+                ),
+                MovieHorizontalListView(
+                  movies: topRatedMovies,
+                  title: 'Best calification',
+                  subtitle: 'from all times',
+                  loadNextPage: () =>
+                      ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
+                ),
+                const SizedBox(height: 40),
+                ElevatedButton(
+                  onPressed: () {
+                    context.go('/categories');
+                  },
+                  child: const Text('GO TO CATEGORIES'),
+                ),
+                const SizedBox(height: 40),
+              ],
+            );
+          }, childCount: 1),
+        ),
       ],
     );
   }
