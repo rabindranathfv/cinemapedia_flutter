@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia_flutter/config/helpers/human_formats.dart';
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
@@ -7,8 +9,28 @@ typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
 
 class SearchMovieDelegate extends SearchDelegate<Movie?> {
   final SearchMoviesCallback searchMovies;
+  StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
+  Timer? _debounceTimer;
 
   SearchMovieDelegate({required this.searchMovies});
+
+  void clearStreams() {
+    _debounceTimer?.cancel();
+    debounceMovies.close();
+  }
+
+  void _onQueryChanged(String query) {
+    if (query.isEmpty) return;
+    if (_debounceTimer?.isActive ?? false) _debounceTimer?.cancel();
+    _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
+      if (query.isEmpty) {
+        debounceMovies.add([]);
+        return;
+      }
+      final movies = await searchMovies(query);
+      debounceMovies.add(movies);
+    });
+  }
 
   @override
   String? get searchFieldLabel => 'Search Movie';
@@ -27,6 +49,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
       duration: const Duration(milliseconds: 300),
       child: IconButton(
         onPressed: () {
+          clearStreams();
           close(context, null);
         },
         icon: const Icon(Icons.arrow_back),
@@ -41,6 +64,8 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 
   @override
   Widget buildSuggestions(BuildContext context) {
+    _onQueryChanged(query);
+
     if (query.isEmpty) {
       return Center(
         child: Container(
@@ -69,8 +94,8 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
       );
     }
 
-    return FutureBuilder(
-      future: searchMovies(query),
+    return StreamBuilder(
+      stream: debounceMovies.stream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -113,7 +138,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
           itemBuilder: (context, index) => _MovieItem(
             movie: movies[index],
             onMovieSelected: (context, movie) {
-              // clearStreams();
+              clearStreams();
               close(context, movie);
             },
           ),
@@ -150,6 +175,8 @@ class _MovieItem extends StatelessWidget {
                   movie.posterPath,
                   loadingBuilder: (context, child, loadingProgress) =>
                       FadeIn(child: child),
+                  errorBuilder: (context, error, stackTrace) =>
+                      const Icon(Icons.movie_outlined, size: 40),
                 ),
               ),
             ),
