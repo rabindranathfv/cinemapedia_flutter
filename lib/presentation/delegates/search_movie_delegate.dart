@@ -9,10 +9,14 @@ typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
 
 class SearchMovieDelegate extends SearchDelegate<Movie?> {
   final SearchMoviesCallback searchMovies;
+  List<Movie> initialMovies;
   StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
   Timer? _debounceTimer;
 
-  SearchMovieDelegate({required this.searchMovies});
+  SearchMovieDelegate({required this.searchMovies, required this.initialMovies})
+    : super(searchFieldLabel: 'Search movies') {
+    debounceMovies.add(initialMovies);
+  }
 
   void clearStreams() {
     _debounceTimer?.cancel();
@@ -22,18 +26,47 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   void _onQueryChanged(String query) {
     if (query.isEmpty) return;
     if (_debounceTimer?.isActive ?? false) _debounceTimer?.cancel();
+
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
-      if (query.isEmpty) {
-        debounceMovies.add([]);
-        return;
-      }
       final movies = await searchMovies(query);
+      initialMovies = movies;
       debounceMovies.add(movies);
     });
   }
 
-  @override
-  String? get searchFieldLabel => 'Search Movie';
+  StreamBuilder<List<Movie>> _buildResultsAndSuggestions(
+    Stream<List<Movie>> moviesStream,
+    List<Movie> initialMovies,
+  ) {
+    return StreamBuilder(
+      initialData: initialMovies,
+      stream: moviesStream,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
+
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return const Center(child: Text('No movies found'));
+        }
+
+        final movies = snapshot.data ?? [];
+
+        return ListView.builder(
+          itemCount: movies.length,
+          itemBuilder: (context, index) => ListTile(
+            leading: Image.network(movies[index].posterPath),
+            title: Text(movies[index].title),
+            subtitle: Text(movies[index].releaseDate.toString()),
+            onTap: () {
+              clearStreams();
+              close(context, movies[index]);
+            },
+          ),
+        );
+      },
+    );
+  }
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -59,7 +92,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return const Text('Build Results');
+    return _buildResultsAndSuggestions(debounceMovies.stream, initialMovies);
   }
 
   @override
@@ -94,57 +127,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
       );
     }
 
-    return StreamBuilder(
-      stream: debounceMovies.stream,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Center(
-            child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey, width: 2),
-                borderRadius: BorderRadius.circular(12),
-              ),
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.search_off, size: 80, color: Colors.grey),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'No movies found',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Try searching with:\n• Movie titles\n• Actor names\n• Release year',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.grey, height: 1.5),
-                  ),
-                ],
-              ),
-            ),
-          );
-        }
-
-        final movies = snapshot.data ?? [];
-
-        return ListView.builder(
-          itemCount: movies.length,
-          itemBuilder: (context, index) => _MovieItem(
-            movie: movies[index],
-            onMovieSelected: (context, movie) {
-              clearStreams();
-              close(context, movie);
-            },
-          ),
-        );
-      },
-    );
+    return _buildResultsAndSuggestions(debounceMovies.stream, initialMovies);
   }
 }
 

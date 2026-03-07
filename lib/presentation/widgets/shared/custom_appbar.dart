@@ -1,5 +1,7 @@
+import 'package:cinemapedia_flutter/domain/entities/movie.dart';
 import 'package:cinemapedia_flutter/presentation/delegates/search_movie_delegate.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movies_repository_provider.dart';
+import 'package:cinemapedia_flutter/presentation/screen/providers/search/search_movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -26,11 +28,17 @@ class CustomAppbar extends ConsumerWidget {
               const Spacer(),
               IconButton(
                 onPressed: () async {
-                  final movieRepository = ref.read(movieRepositoryProvider);
-                  final movie = await showSearch(
+                  final searchQuery = ref.read(searchQueryProvider);
+                  final searchedMovies = ref.read(searchMoviesProvider);
+
+                  final movie = await showSearch<Movie?>(
+                    query: searchQuery,
                     context: context,
                     delegate: SearchMovieDelegate(
-                      searchMovies: movieRepository.searchMovies,
+                      initialMovies: searchedMovies,
+                      searchMovies: (query) => ref
+                          .read(searchMoviesProvider.notifier)
+                          .searchMoviesByQuery(query),
                     ),
                   );
                   if (movie != null && context.mounted) {
