@@ -11,6 +11,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   final SearchMoviesCallback searchMovies;
   List<Movie> initialMovies;
   StreamController<List<Movie>> debounceMovies = StreamController.broadcast();
+  StreamController<bool> isLoadingMovies = StreamController.broadcast();
   Timer? _debounceTimer;
 
   SearchMovieDelegate({required this.searchMovies, required this.initialMovies})
@@ -21,16 +22,19 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   void clearStreams() {
     _debounceTimer?.cancel();
     debounceMovies.close();
+    isLoadingMovies.close();
   }
 
   void _onQueryChanged(String query) {
     if (query.isEmpty) return;
+    isLoadingMovies.add(true);
     if (_debounceTimer?.isActive ?? false) _debounceTimer?.cancel();
 
     _debounceTimer = Timer(const Duration(milliseconds: 500), () async {
       final movies = await searchMovies(query);
       initialMovies = movies;
       debounceMovies.add(movies);
+      isLoadingMovies.add(false);
     });
   }
 
@@ -71,7 +75,23 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
-      IconButton(onPressed: () => query = '', icon: const Icon(Icons.clear)),
+      StreamBuilder(
+        initialData: false,
+        stream: isLoadingMovies.stream,
+        builder: (context, snapshot) {
+          final isLoading = snapshot.data ?? false;
+          if (isLoading) {
+            return IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.refresh, color: Colors.blue.shade300),
+            );
+          }
+          return IconButton(
+            onPressed: () => query = '',
+            icon: const Icon(Icons.clear),
+          );
+        },
+      ),
     ];
   }
 
@@ -79,7 +99,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
   Widget? buildLeading(BuildContext context) {
     return FadeIn(
       animate: query.isNotEmpty,
-      duration: const Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 200),
       child: IconButton(
         onPressed: () {
           clearStreams();
