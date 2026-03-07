@@ -81,9 +81,14 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
         builder: (context, snapshot) {
           final isLoading = snapshot.data ?? false;
           if (isLoading) {
-            return IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.refresh, color: Colors.blue.shade300),
+            return SpinPerfect(
+              duration: const Duration(seconds: 1),
+              infinite: true,
+              spins: 10,
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.refresh_rounded),
+              ),
             );
           }
           return IconButton(
