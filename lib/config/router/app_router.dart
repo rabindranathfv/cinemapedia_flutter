@@ -1,3 +1,4 @@
+import 'package:cinemapedia_flutter/presentation/views/home_views/home_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -9,20 +10,19 @@ GoRouter createAppRouter(ProviderContainer container) {
     initialLocation: '/',
     routes: [
       GoRoute(
-          path: '/',
-          name: HomeScreen.name,
-          builder: (context, state) => const HomeScreen(),
-          routes: [
-            GoRoute(
-              path: 'movie/:mid',
-              name: MovieScreen.name,
-              builder: (context, state) {
-                return MovieScreen(
-                  movieId: state.pathParameters['mid']!,
-                );
-              },
-            ),
-          ]),
+        path: '/',
+        name: HomeScreen.name,
+        builder: (context, state) => const HomeScreen(childView: HomeView()),
+        routes: [
+          GoRoute(
+            path: 'movie/:mid',
+            name: MovieScreen.name,
+            builder: (context, state) {
+              return MovieScreen(movieId: state.pathParameters['mid']!);
+            },
+          ),
+        ],
+      ),
       GoRoute(
         path: '/categories',
         name: CategoriesScreen.name,
