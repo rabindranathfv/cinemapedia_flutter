@@ -8,27 +8,40 @@ import 'package:go_router/go_router.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/shared_preferences/shared_preferences_provider.dart';
 import 'package:cinemapedia_flutter/presentation/screen/screens.dart';
 
-GoRouter createAppRouter(ProviderContainer container) {
-  final GlobalKey<NavigatorState> rootNavigatorKey =
-      GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'root',
+);
 
+final GlobalKey<NavigatorState> sectionHomeKey = GlobalKey<NavigatorState>(
+  debugLabel: 'sectionHomeNav',
+);
+
+final GlobalKey<NavigatorState> sectionCategoriesKey =
+    GlobalKey<NavigatorState>(debugLabel: 'sectionCategoriesNav');
+
+final GlobalKey<NavigatorState> sectionFavoritesKey = GlobalKey<NavigatorState>(
+  debugLabel: 'sectionFavoritesNav',
+);
+
+GoRouter createAppRouter(ProviderContainer container) {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
-    routes: [
+    routes: <RouteBase>[
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) {
           return HomeScreen(navigationShell: navigationShell);
         },
-        branches: [
+        branches: <StatefulShellBranch>[
           // branch 0 - home tab
           StatefulShellBranch(
+            navigatorKey: sectionHomeKey,
             routes: [
               GoRoute(
                 path: '/',
                 name: HomeScreen.name,
                 builder: (context, state) => const HomeView(),
-                routes: [
+                routes: <RouteBase>[
                   GoRoute(
                     path: '/movie/:mid',
                     name: MovieScreen.name,
@@ -43,6 +56,7 @@ GoRouter createAppRouter(ProviderContainer container) {
 
           // branch 1 - categories tab
           StatefulShellBranch(
+            navigatorKey: sectionCategoriesKey,
             routes: [
               GoRoute(
                 path: '/categories',
@@ -53,6 +67,7 @@ GoRouter createAppRouter(ProviderContainer container) {
 
           // branch 2 - Favorites tab
           StatefulShellBranch(
+            navigatorKey: sectionFavoritesKey,
             routes: [
               GoRoute(
                 path: '/favorites',
@@ -71,25 +86,3 @@ GoRouter createAppRouter(ProviderContainer container) {
     },
   );
 }
-
-
-
-// GoRoute(
-//             path: 'movie/:mid',
-//             name: MovieScreen.name,
-//             builder: (context, state) {
-//               return MovieScreen(movieId: state.pathParameters['mid']!);
-//             },
-//           ),
-
-
-// GoRoute(
-//         path: '/categories',
-//         name: CategoriesScreen.name,
-//         builder: (context, state) => const CategoriesScreen(),
-//       ),
-//       GoRoute(
-//         path: '/initial',
-//         name: InitialScreen.name,
-//         builder: (context, state) => const InitialScreen(),
-//       ),
