@@ -85,13 +85,6 @@ class HomeViewState extends ConsumerState<HomeView> {
                       ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
                 ),
                 const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () {
-                    context.go('/categories');
-                  },
-                  child: const Text('GO TO CATEGORIES'),
-                ),
-                const SizedBox(height: 40),
               ],
             );
           }, childCount: 1),
