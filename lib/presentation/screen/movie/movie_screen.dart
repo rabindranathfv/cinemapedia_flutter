@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
+import 'package:cinemapedia_flutter/presentation/screen/providers/shared_preferences/shared_preferences_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const String name = 'movie_screen';
@@ -33,16 +36,10 @@ class _MovieScreenState extends ConsumerState<MovieScreen> {
       );
     }
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text('movieId: ${widget.movieId}'),
-      //   leading: IconButton(
-      //       onPressed: () => context.pop(),
-      //       icon: const Icon(Icons.arrow_back)),
-      // ),
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
-          _CustomSliverAppBar(movie: movie),
+          _CustomSliverAppBar(movie: movie, context: context, ref: ref),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
               return _MovieDetails(movie: movie);
@@ -221,16 +218,49 @@ class _ActorsByMovie extends ConsumerWidget {
 
 class _CustomSliverAppBar extends StatelessWidget {
   final Movie movie;
-  const _CustomSliverAppBar({required this.movie});
+  final BuildContext context;
+  final WidgetRef ref;
+  const _CustomSliverAppBar({
+    required this.movie,
+    required this.context,
+    required this.ref,
+  });
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final favoriteProvider = ref.watch(favoritesMoviesProvider);
+    final isFavorite = favoriteProvider.containsKey(movie.id.toString());
+    print('ISFAVORITE Movie ${movie.title} ====> : ${isFavorite}');
 
     return SliverAppBar(
       backgroundColor: Colors.black,
       expandedHeight: size.height * 0.7,
       foregroundColor: Colors.white,
+      actions: [
+        (!isFavorite)
+            ? IconButton(
+                onPressed: () async {
+                  print('CLICK ADD FAVORITE =====>');
+                  final prefs = await ref.read(
+                    sharedPreferencesProvider.future,
+                  );
+                  final Map<String, Movie> favorites = {};
+                  final String movieId = movie.id.toString();
+                  favorites[movieId] = movie;
+                  ref
+                      .read(favoritesMoviesProvider.notifier)
+                      .toggleFavorite(movie);
+                  // print('enconded favorites: ${jsonEncode(favorites)}');
+                  // await prefs.setString('favorites', jsonEncode(favorites));
+                },
+                icon: const Icon(Icons.favorite_outline),
+              )
+            : IconButton(
+                onPressed: () async {},
+                icon: const Icon(Icons.favorite, color: Colors.red),
+              ),
+      ],
       flexibleSpace: FlexibleSpaceBar(
         titlePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         background: Stack(
@@ -263,11 +293,6 @@ class _CustomSliverAppBar extends StatelessWidget {
             ),
           ],
         ),
-        // title: Text(
-        //   movie.title,
-        //   textAlign: TextAlign.start,
-        //   style: const TextStyle(fontSize: 15, color: Colors.white),
-        // ),
       ),
     );
   }
