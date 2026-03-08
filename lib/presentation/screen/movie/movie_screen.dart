@@ -1,14 +1,11 @@
-import 'dart:convert';
 import 'dart:math';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia_flutter/presentation/screen/providers/shared_preferences/shared_preferences_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const String name = 'movie_screen';
@@ -241,23 +238,18 @@ class _CustomSliverAppBar extends StatelessWidget {
         (!isFavorite)
             ? IconButton(
                 onPressed: () async {
-                  print('CLICK ADD FAVORITE =====>');
-                  final prefs = await ref.read(
-                    sharedPreferencesProvider.future,
-                  );
-                  final Map<String, Movie> favorites = {};
-                  final String movieId = movie.id.toString();
-                  favorites[movieId] = movie;
                   ref
                       .read(favoritesMoviesProvider.notifier)
                       .toggleFavorite(movie);
-                  // print('enconded favorites: ${jsonEncode(favorites)}');
-                  // await prefs.setString('favorites', jsonEncode(favorites));
                 },
                 icon: const Icon(Icons.favorite_outline),
               )
             : IconButton(
-                onPressed: () async {},
+                onPressed: () async {
+                  ref
+                      .read(favoritesMoviesProvider.notifier)
+                      .toggleFavorite(movie);
+                },
                 icon: const Icon(Icons.favorite, color: Colors.red),
               ),
       ],

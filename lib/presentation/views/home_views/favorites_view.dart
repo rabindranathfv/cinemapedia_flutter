@@ -4,11 +4,23 @@ import 'package:go_router/go_router.dart';
 
 import '../../screen/providers/providers.dart';
 
-class FavoritesView extends ConsumerWidget {
+class FavoritesView extends ConsumerStatefulWidget {
   const FavoritesView({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<FavoritesView> createState() => _FavoritesViewState();
+}
+
+class _FavoritesViewState extends ConsumerState<FavoritesView> {
+  @override
+  void initState() {
+    super.initState();
+    // Load favorites from SharedPreferences when this view is first created
+    ref.read(favoritesMoviesProvider.notifier).loadFromPrefs();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // ref.watch subscribes to the provider state — rebuilds automatically on change
     ref.watch(favoritesMoviesProvider);
     final movies = ref
@@ -31,6 +43,7 @@ class FavoritesView extends ConsumerWidget {
                 leading: Image.network(movies[index].posterPath),
                 trailing: IconButton(
                   onPressed: () {
+                    // toggleFavorite now saves to SharedPreferences automatically
                     ref
                         .read(favoritesMoviesProvider.notifier)
                         .toggleFavorite(movies[index]);
