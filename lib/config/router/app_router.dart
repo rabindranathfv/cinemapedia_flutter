@@ -1,3 +1,4 @@
+import 'package:cinemapedia_flutter/presentation/views/views.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
@@ -8,37 +9,36 @@ GoRouter createAppRouter(ProviderContainer container) {
   return GoRouter(
     initialLocation: '/',
     routes: [
-      GoRoute(
-          path: '/',
-          name: HomeScreen.name,
-          builder: (context, state) => const HomeScreen(),
-          routes: [
-            GoRoute(
-              path: 'movie/:mid',
-              name: MovieScreen.name,
-              builder: (context, state) {
-                return MovieScreen(
-                  movieId: state.pathParameters['mid']!,
-                );
-              },
-            ),
-          ]),
-      GoRoute(
-        path: '/categories',
-        name: CategoriesScreen.name,
-        builder: (context, state) => const CategoriesScreen(),
-      ),
-      GoRoute(
-        path: '/initial',
-        name: InitialScreen.name,
-        builder: (context, state) => const InitialScreen(),
+      ShellRoute(
+        builder: (context, state, child) {
+          return HomeScreen(childView: child);
+        },
+        routes: [
+          GoRoute(
+            path: '/',
+            name: HomeScreen.name,
+            builder: (context, state) => const HomeView(),
+            routes: [
+              GoRoute(
+                path: 'movie/:mid',
+                name: MovieScreen.name,
+                builder: (context, state) {
+                  return MovieScreen(movieId: state.pathParameters['mid']!);
+                },
+              ),
+            ],
+          ),
+          GoRoute(
+            path: '/favorites',
+            builder: (context, state) => const FavoritesView(),
+          ),
+        ],
       ),
     ],
     redirect: (context, state) async {
       // Access shared preferences through the provider
       final prefs = await container.read(sharedPreferencesProvider.future);
       final isFirstTime = prefs.getBool('isFirstTime') ?? true;
-      print('ISFIRSTTIME: ${isFirstTime}');
 
       // Logic for redirecting based on first time
       if (isFirstTime) {
@@ -50,3 +50,30 @@ GoRouter createAppRouter(ProviderContainer container) {
     },
   );
 }
+
+
+// routes father/child
+// GoRoute(
+//         path: '/',
+//         name: HomeScreen.name,
+//         builder: (context, state) => const HomeScreen(childView: HomeView()),
+//         routes: [
+//           GoRoute(
+//             path: 'movie/:mid',
+//             name: MovieScreen.name,
+//             builder: (context, state) {
+//               return MovieScreen(movieId: state.pathParameters['mid']!);
+//             },
+//           ),
+//         ],
+//       ),
+//       GoRoute(
+//         path: '/categories',
+//         name: CategoriesScreen.name,
+//         builder: (context, state) => const CategoriesScreen(),
+//       ),
+//       GoRoute(
+//         path: '/initial',
+//         name: InitialScreen.name,
+//         builder: (context, state) => const InitialScreen(),
+//       ),
