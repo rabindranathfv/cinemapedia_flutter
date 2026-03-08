@@ -34,7 +34,7 @@ class MoviesFavoriteNotifier extends Notifier<Map<String, Movie>> {
     return state.containsKey(movieId);
   }
 
-  Future<List<Movie>> getFavoriteMovies() async {
+  List<Movie> getFavoriteMovies() {
     return state.values.toList();
   }
 }
