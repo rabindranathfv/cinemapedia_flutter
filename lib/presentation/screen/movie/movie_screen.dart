@@ -228,7 +228,6 @@ class _CustomSliverAppBar extends StatelessWidget {
     final size = MediaQuery.of(context).size;
     final favoriteProvider = ref.watch(favoritesMoviesProvider);
     final isFavorite = favoriteProvider.containsKey(movie.id.toString());
-    print('ISFAVORITE Movie ${movie.title} ====> : ${isFavorite}');
 
     return SliverAppBar(
       backgroundColor: Colors.black,

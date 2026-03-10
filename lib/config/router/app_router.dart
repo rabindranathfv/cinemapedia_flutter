@@ -2,10 +2,8 @@ import 'package:cinemapedia_flutter/presentation/views/home_views/categories_vie
 import 'package:cinemapedia_flutter/presentation/views/home_views/favorites_view.dart';
 import 'package:cinemapedia_flutter/presentation/views/home_views/home_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:cinemapedia_flutter/presentation/screen/providers/shared_preferences/shared_preferences_provider.dart';
 import 'package:cinemapedia_flutter/presentation/screen/screens.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
@@ -23,7 +21,7 @@ final GlobalKey<NavigatorState> sectionFavoritesKey = GlobalKey<NavigatorState>(
   debugLabel: 'sectionFavoritesNav',
 );
 
-GoRouter createAppRouter(ProviderContainer container) {
+GoRouter createAppRouter() {
   return GoRouter(
     navigatorKey: rootNavigatorKey,
     initialLocation: '/',
@@ -78,11 +76,5 @@ GoRouter createAppRouter(ProviderContainer container) {
         ],
       ),
     ],
-    redirect: (context, state) async {
-      final prefs = await container.read(sharedPreferencesProvider.future);
-      final isFirstTime = prefs.getBool('isFirstTime') ?? true;
-      if (isFirstTime) return '/initial';
-      return null;
-    },
   );
 }

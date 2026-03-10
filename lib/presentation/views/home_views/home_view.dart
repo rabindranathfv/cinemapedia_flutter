@@ -1,14 +1,11 @@
-import 'package:cinemapedia_flutter/presentation/screen/providers/movies/initial_loading_provider.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movies_slideshow_provider.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/shared_preferences/shared_preferences_provider.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/movies/movie_horizontal_list_view.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/movies/movies_slideshow.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/shared/custom_appbar.dart';
-import 'package:cinemapedia_flutter/presentation/widgets/shared/full_screen_loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -30,13 +27,6 @@ class HomeViewState extends ConsumerState<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    print('Rederizo HOME!!!!');
-    final initialLoading = ref.watch(initialLoadingProvider);
-
-    if (initialLoading) {
-      return const FullScreenLoader();
-    }
-
     final playingMovies = ref.watch(nowPlayingMoviesProvider);
     final playingMoviesSlide = ref.watch(moviesSlideshowProvider);
     final popularMovies = ref.watch(popularMoviesProvider);
