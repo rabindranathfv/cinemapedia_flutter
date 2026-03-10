@@ -43,7 +43,7 @@ GoRouter createAppRouter(ProviderContainer container) {
                 builder: (context, state) => const HomeView(),
                 routes: <RouteBase>[
                   GoRoute(
-                    path: '/movie/:mid',
+                    path: 'movie/:mid',
                     name: MovieScreen.name,
                     builder: (context, state) {
                       return MovieScreen(movieId: state.pathParameters['mid']!);
