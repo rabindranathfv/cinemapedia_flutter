@@ -16,7 +16,7 @@ class MoviePosterLink extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        context.push('/home/0/movie/${movie.id}');
+        context.push('/movie/${movie.id}');
       },
       child: Stack(
         children: [
