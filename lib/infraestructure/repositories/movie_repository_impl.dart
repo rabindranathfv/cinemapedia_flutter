@@ -1,4 +1,5 @@
 import 'package:cinemapedia_flutter/domain/datasources/movies_datasource.dart';
+import 'package:cinemapedia_flutter/domain/entities/genre.dart';
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
 import 'package:cinemapedia_flutter/domain/repositories/movies_repository.dart';
 
@@ -35,5 +36,15 @@ class MovieRepositoryImpl extends MoviesRepository {
   @override
   Future<List<Movie>> searchMovies(String query) {
     return datasource.searchMovies(query);
+  }
+
+  @override
+  Future<List<Genre>> getGenres() {
+    return datasource.getGenres();
+  }
+
+  @override
+  Future<List<Movie>> getMoviesByGenre(int genreId, {int page = 1}) {
+    return datasource.getMoviesByGenre(genreId, page: page);
   }
 }
