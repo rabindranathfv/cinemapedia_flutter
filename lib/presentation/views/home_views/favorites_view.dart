@@ -1,3 +1,4 @@
+import 'package:cinemapedia_flutter/domain/entities/movie.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/movies/movie_masonry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -38,27 +39,18 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
       ),
       body: movies.isEmpty
           ? const Center(child: Text('No favorite movies yet'))
-          // : ListView.builder(
-          //     itemCount: movies.length,
-          //     itemBuilder: (context, index) => ListTile(
-          //       leading: Image.network(movies[index].posterPath),
-          //       trailing: IconButton(
-          //         onPressed: () {
-          //           // toggleFavorite now saves to SharedPreferences automatically
-          //           ref
-          //               .read(favoritesMoviesProvider.notifier)
-          //               .toggleFavorite(movies[index]);
-          //         },
-          //         icon: const Icon(Icons.favorite, color: Colors.red),
-          //       ),
-          //       title: Text(movies[index].title),
-          //       subtitle: Text(movies[index].releaseDate.toString()),
-          //       onTap: () {
-          //         context.go('/movie/${movies[index].id}');
-          //       },
-          //     ),
-          //   ),
-          : MovieMasonry(movies: movies),
+          : MovieMasonry(
+              movies: movies,
+              onMoviesLoaded: (List<Movie> movies) {
+                ref.read(favoritesMoviesProvider.notifier).loadFromPrefs();
+              },
+              toggleFavorite: (Movie movie) {
+                // toggleFavorite now saves to SharedPreferences automatically
+                ref
+                    .read(favoritesMoviesProvider.notifier)
+                    .toggleFavorite(movie);
+              },
+            ),
     );
   }
 }

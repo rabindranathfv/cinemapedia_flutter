@@ -7,22 +7,26 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class MovieMasonry extends ConsumerStatefulWidget {
   final List<Movie> movies;
+  final Function(Movie) toggleFavorite;
+  final Function(List<Movie>) onMoviesLoaded;
 
-  const MovieMasonry({super.key, required this.movies});
+  const MovieMasonry({
+    super.key,
+    required this.movies,
+    required this.toggleFavorite,
+    required this.onMoviesLoaded,
+  });
 
   @override
   ConsumerState<MovieMasonry> createState() => _MovieMasonryState();
 }
 
 class _MovieMasonryState extends ConsumerState<MovieMasonry> {
-  bool isLastPage = false;
-  bool isLoading = false;
-
   @override
   void initState() {
     super.initState();
-    // Load favorites from SharedPreferences when this view is first created
-    ref.read(favoritesMoviesProvider.notifier).loadFromPrefs();
+    // Notify parent widget that movies have been loaded
+    widget.onMoviesLoaded(widget.movies);
   }
 
   @override
@@ -39,12 +43,18 @@ class _MovieMasonryState extends ConsumerState<MovieMasonry> {
             return Column(
               children: [
                 const SizedBox(height: 20),
-                MoviePosterLink(movie: widget.movies[index]),
+                MoviePosterLink(
+                  movie: widget.movies[index],
+                  toggleFavorite: widget.toggleFavorite,
+                ),
               ],
             );
           }
 
-          return MoviePosterLink(movie: widget.movies[index]);
+          return MoviePosterLink(
+            movie: widget.movies[index],
+            toggleFavorite: widget.toggleFavorite,
+          );
         },
       ),
     );
