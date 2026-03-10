@@ -38,7 +38,37 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
         ),
       ),
       body: movies.isEmpty
-          ? const Center(child: Text('No favorite movies yet'))
+          ? Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey, width: 2),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 40,
+                ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: const [
+                    Icon(Icons.movie_creation, size: 80, color: Colors.grey),
+                    SizedBox(height: 16),
+                    Text(
+                      'Start add some favorites',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 8),
+                    Text(
+                      'Select movies you like and they will appear here',
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            )
           : MovieMasonry(
               movies: movies,
               onMoviesLoaded: (List<Movie> movies) {
