@@ -175,7 +175,7 @@ class _ActorsByMovie extends ConsumerWidget {
 
     final actorsMovie = actors[movieId];
     return SizedBox(
-      height: 300,
+      height: 250,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: actorsMovie!.length,
@@ -241,15 +241,27 @@ class _TrailersSection extends ConsumerWidget {
       );
     }
 
-    // Filter to only trailers, teasers, and clips
-    final trailers = videos
-        .where((v) => v.isTrailer || v.isTeaser || v.isClip)
-        .toList();
+    // Filter to only trailers, teasers, and clips – pick the best 3
+    final allTrailers =
+        videos.where((v) => v.isTrailer || v.isTeaser || v.isClip).toList()
+          ..sort((a, b) {
+            // Prioritise: Trailer > Teaser > Clip, then official first
+            int typeRank(Video v) => v.isTrailer
+                ? 0
+                : v.isTeaser
+                ? 1
+                : 2;
+            final cmp = typeRank(a).compareTo(typeRank(b));
+            if (cmp != 0) return cmp;
+            if (a.official != b.official) return a.official ? -1 : 1;
+            return 0;
+          });
+    final trailers = allTrailers.take(3).toList();
 
     if (trailers.isEmpty) return const SizedBox.shrink();
 
     return Padding(
-      padding: const EdgeInsets.only(top: 16),
+      padding: const EdgeInsets.only(top: 6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
