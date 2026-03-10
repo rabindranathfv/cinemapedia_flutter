@@ -1,3 +1,4 @@
+import 'package:cinemapedia_flutter/domain/entities/genre.dart';
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
 
 abstract class MovieDatasource {
@@ -6,4 +7,7 @@ abstract class MovieDatasource {
   Future<List<Movie>> getTopRated({int page = 1});
   Future<List<Movie>> getUpcoming({int page = 1});
   Future<Movie> getMovieById(String id);
+  Future<List<Movie>> searchMovies(String query);
+  Future<List<Genre>> getGenres();
+  Future<List<Movie>> getMoviesByGenre(int genreId, {int page = 1});
 }

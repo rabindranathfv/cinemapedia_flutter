@@ -1,52 +1,80 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemapedia_flutter/presentation/views/home_views/categories_view.dart';
+import 'package:cinemapedia_flutter/presentation/views/home_views/favorites_view.dart';
+import 'package:cinemapedia_flutter/presentation/views/home_views/home_view.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:cinemapedia_flutter/presentation/screen/providers/shared_preferences/shared_preferences_provider.dart';
 import 'package:cinemapedia_flutter/presentation/screen/screens.dart';
 
-GoRouter createAppRouter(ProviderContainer container) {
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
+  debugLabel: 'root',
+);
+
+final GlobalKey<NavigatorState> sectionHomeKey = GlobalKey<NavigatorState>(
+  debugLabel: 'sectionHomeNav',
+);
+
+final GlobalKey<NavigatorState> sectionCategoriesKey =
+    GlobalKey<NavigatorState>(debugLabel: 'sectionCategoriesNav');
+
+final GlobalKey<NavigatorState> sectionFavoritesKey = GlobalKey<NavigatorState>(
+  debugLabel: 'sectionFavoritesNav',
+);
+
+GoRouter createAppRouter() {
   return GoRouter(
+    navigatorKey: rootNavigatorKey,
     initialLocation: '/',
-    routes: [
-      GoRoute(
-          path: '/',
-          name: HomeScreen.name,
-          builder: (context, state) => const HomeScreen(),
-          routes: [
-            GoRoute(
-              path: 'movie/:mid',
-              name: MovieScreen.name,
-              builder: (context, state) {
-                return MovieScreen(
-                  movieId: state.pathParameters['mid']!,
-                );
-              },
-            ),
-          ]),
-      GoRoute(
-        path: '/categories',
-        name: CategoriesScreen.name,
-        builder: (context, state) => const CategoriesScreen(),
-      ),
-      GoRoute(
-        path: '/initial',
-        name: InitialScreen.name,
-        builder: (context, state) => const InitialScreen(),
+    routes: <RouteBase>[
+      StatefulShellRoute.indexedStack(
+        builder: (context, state, navigationShell) {
+          return HomeScreen(navigationShell: navigationShell);
+        },
+        branches: <StatefulShellBranch>[
+          // branch 0 - home tab
+          StatefulShellBranch(
+            navigatorKey: sectionHomeKey,
+            routes: [
+              GoRoute(
+                path: '/',
+                name: HomeScreen.name,
+                builder: (context, state) => const HomeView(),
+                routes: <RouteBase>[
+                  GoRoute(
+                    path: 'movie/:mid',
+                    name: MovieScreen.name,
+                    builder: (context, state) {
+                      return MovieScreen(movieId: state.pathParameters['mid']!);
+                    },
+                  ),
+                ],
+              ),
+            ],
+          ),
+
+          // branch 1 - categories tab
+          StatefulShellBranch(
+            navigatorKey: sectionCategoriesKey,
+            routes: [
+              GoRoute(
+                path: '/categories',
+                builder: (context, state) => const CategoriesView(),
+              ),
+            ],
+          ),
+
+          // branch 2 - Favorites tab
+          StatefulShellBranch(
+            navigatorKey: sectionFavoritesKey,
+            routes: [
+              GoRoute(
+                path: '/favorites',
+                builder: (context, state) => const FavoritesView(),
+              ),
+            ],
+          ),
+        ],
       ),
     ],
-    redirect: (context, state) async {
-      // Access shared preferences through the provider
-      final prefs = await container.read(sharedPreferencesProvider.future);
-      final isFirstTime = prefs.getBool('isFirstTime') ?? true;
-      print('ISFIRSTTIME: ${isFirstTime}');
-
-      // Logic for redirecting based on first time
-      if (isFirstTime) {
-        print('ES 1RA VEZ QUE ENTRA A LA APP');
-        // prefs.setsBool('isFirstTime', false);
-        return '/initial';
-      }
-      return null; // No redirection, continue as normal
-    },
   );
 }

@@ -1,8 +1,12 @@
 import 'package:cinemapedia_flutter/config/enviroment/enviroment.dart';
 import 'package:cinemapedia_flutter/domain/datasources/movies_datasource.dart';
+import 'package:cinemapedia_flutter/domain/entities/genre.dart';
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/infraestructure/mappers/genre_mapper.dart';
 import 'package:cinemapedia_flutter/infraestructure/mappers/movie_mapper.dart';
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_details.dart';
+import 'package:cinemapedia_flutter/infraestructure/models/moviedb/genre_moviedb.dart';
+import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_details.dart'
+    hide Genre;
 import 'package:cinemapedia_flutter/infraestructure/models/moviedb/moviedb_response.dart';
 import 'package:dio/dio.dart';
 
@@ -12,7 +16,7 @@ class MoviedbDatasource extends MovieDatasource {
       baseUrl: 'https://api.themoviedb.org/3',
       queryParameters: {
         'api_key': Enviroment.theMovieDBKey,
-        'language': 'es-MX',
+        'language': 'en-US',
       },
     ),
   );
@@ -66,13 +70,43 @@ class MoviedbDatasource extends MovieDatasource {
   @override
   Future<Movie> getMovieById(String id) async {
     final response = await dio.get('/movie/$id');
-    if (response.statusCode != 200)
+    if (response.statusCode != 200) {
       throw Exception('Movie with Id: $id not found');
+    }
 
     final movieDetails = MovieDetails.fromJson(response.data);
 
     final Movie movie = MovieMapper.MovieDetailsToEntity(movieDetails);
 
     return movie;
+  }
+
+  @override
+  Future<List<Movie>> searchMovies(String query) async {
+    if (query.isEmpty) return [];
+
+    final response = await dio.get(
+      '/search/movie',
+      queryParameters: {'query': query},
+    );
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Genre>> getGenres() async {
+    final response = await dio.get('/genre/movie/list');
+    final List<dynamic> genres = response.data['genres'] ?? [];
+    return genres
+        .map((g) => GenreMapper.genreDBtoEntity(GenreMovieDB.fromJson(g)))
+        .toList();
+  }
+
+  @override
+  Future<List<Movie>> getMoviesByGenre(int genreId, {int page = 1}) async {
+    final response = await dio.get(
+      '/discover/movie',
+      queryParameters: {'with_genres': genreId.toString(), 'page': page},
+    );
+    return _jsonToMovies(response.data);
   }
 }
