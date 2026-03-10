@@ -2,12 +2,15 @@ import 'package:cinemapedia_flutter/config/enviroment/enviroment.dart';
 import 'package:cinemapedia_flutter/domain/datasources/movies_datasource.dart';
 import 'package:cinemapedia_flutter/domain/entities/genre.dart';
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/domain/entities/video.dart';
 import 'package:cinemapedia_flutter/infraestructure/mappers/genre_mapper.dart';
 import 'package:cinemapedia_flutter/infraestructure/mappers/movie_mapper.dart';
+import 'package:cinemapedia_flutter/infraestructure/mappers/video_mapper.dart';
 import 'package:cinemapedia_flutter/infraestructure/models/moviedb/genre_moviedb.dart';
 import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_details.dart'
     hide Genre;
 import 'package:cinemapedia_flutter/infraestructure/models/moviedb/moviedb_response.dart';
+import 'package:cinemapedia_flutter/infraestructure/models/moviedb/video_moviedb.dart';
 import 'package:dio/dio.dart';
 
 class MoviedbDatasource extends MovieDatasource {
@@ -107,6 +110,22 @@ class MoviedbDatasource extends MovieDatasource {
       '/discover/movie',
       queryParameters: {'with_genres': genreId.toString(), 'page': page},
     );
+    return _jsonToMovies(response.data);
+  }
+
+  @override
+  Future<List<Video>> getMovieVideos(String movieId) async {
+    final response = await dio.get('/movie/$movieId/videos');
+    final List<dynamic> results = response.data['results'] ?? [];
+    return results
+        .map((v) => VideoMapper.videoDBtoEntity(VideoMovieDB.fromJson(v)))
+        .where((video) => video.isFromYoutube)
+        .toList();
+  }
+
+  @override
+  Future<List<Movie>> getSimilarMovies(String movieId) async {
+    final response = await dio.get('/movie/$movieId/similar');
     return _jsonToMovies(response.data);
   }
 }
