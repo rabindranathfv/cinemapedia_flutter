@@ -1,17 +1,13 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemapedia_flutter/domain/entities/video.dart';
-import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
+import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movies_repository_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final movieVideosProvider =
-    NotifierProvider<MovieVideosNotifier, Map<String, List<Video>>>(
-      MovieVideosNotifier.new,
-    );
+part 'movie_videos_provider.g.dart';
 
-class MovieVideosNotifier extends Notifier<Map<String, List<Video>>> {
+@Riverpod(keepAlive: true)
+class MovieVideos extends _$MovieVideos {
   @override
-  Map<String, List<Video>> build() {
-    return {};
-  }
+  Map<String, List<Video>> build() => {};
 
   Future<void> loadVideos(String movieId) async {
     if (state[movieId] != null) return;
@@ -19,7 +15,6 @@ class MovieVideosNotifier extends Notifier<Map<String, List<Video>>> {
     final videos = await ref
         .read(movieRepositoryProvider)
         .getMovieVideos(movieId);
-
     state = {...state, movieId: videos};
   }
 }

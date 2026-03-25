@@ -1,23 +1,18 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
-import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
+import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movies_repository_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final movieInfoProvider =
-    NotifierProvider<MovieMapNotifier, Map<String, Movie>>(
-      MovieMapNotifier.new,
-    );
+part 'movies_info_provider.g.dart';
 
-class MovieMapNotifier extends Notifier<Map<String, Movie>> {
+@Riverpod(keepAlive: true)
+class MovieInfo extends _$MovieInfo {
   @override
-  Map<String, Movie> build() {
-    return {};
-  }
+  Map<String, Movie> build() => {};
 
   Future<void> loadMovie(String movieId) async {
     if (state[movieId] != null) return;
 
     final movie = await ref.read(movieRepositoryProvider).getMovieById(movieId);
-
     state = {...state, movieId: movie};
   }
 }

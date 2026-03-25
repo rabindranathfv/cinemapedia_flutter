@@ -1,21 +1,15 @@
 import 'dart:convert';
 
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final favoritesMoviesProvider =
-    NotifierProvider<MoviesFavoriteNotifier, Map<String, Movie>>(
-      MoviesFavoriteNotifier.new,
-    );
+part 'movies_favorites_provider.g.dart';
 
-class MoviesFavoriteNotifier extends Notifier<Map<String, Movie>> {
-  MoviesFavoriteNotifier() : super();
-
+@Riverpod(keepAlive: true)
+class FavoritesMovies extends _$FavoritesMovies {
   @override
-  Map<String, Movie> build() {
-    return {};
-  }
+  Map<String, Movie> build() => {};
 
   /// Load favorites from SharedPreferences into state
   Future<void> loadFromPrefs() async {
@@ -50,8 +44,7 @@ class MoviesFavoriteNotifier extends Notifier<Map<String, Movie>> {
   }
 
   bool isFavorite(Movie movie) {
-    final String movieId = movie.id.toString();
-    return state.containsKey(movieId);
+    return state.containsKey(movie.id.toString());
   }
 
   List<Movie> getFavoriteMovies() {
