@@ -1,21 +1,24 @@
-class Video {
-  final String id;
-  final String name;
-  final String key;
-  final String site;
-  final String type;
-  final bool official;
-  final String publishedAt;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  Video({
-    required this.id,
-    required this.name,
-    required this.key,
-    required this.site,
-    required this.type,
-    required this.official,
-    required this.publishedAt,
-  });
+part 'video.freezed.dart';
+part 'video.g.dart';
+
+@freezed
+abstract class Video with _$Video {
+  const factory Video({
+    required String id,
+    required String name,
+    required String key,
+    required String site,
+    required String type,
+    required bool official,
+    required String publishedAt,
+  }) = _Video;
+
+  // Required for custom getters
+  const Video._();
+
+  factory Video.fromJson(Map<String, dynamic> json) => _$VideoFromJson(json);
 
   String get youtubeThumbUrl => 'https://img.youtube.com/vi/$key/hqdefault.jpg';
 

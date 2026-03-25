@@ -1,6 +1,6 @@
 # Freezed Domain Models — Migration Plan
 
-> **Last updated:** 2026-03-25 | **Status:** IN PROGRESS (S1 ✅ Complete, S2–S4 Not started)
+> **Last updated:** 2026-03-25 | **Status:** IN PROGRESS (S1 ✅ Complete, S2 ✅ Complete, S3–S4 Not started)
 
 ## Summary
 
@@ -57,7 +57,7 @@ The work spans 4 vertical slices covering `pubspec.yaml` setup, domain entities,
 | Slice  | Description                    | Parts                                                         | Demo                                                       | Status      |
 | ------ | ------------------------------ | ------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
 | **S1** | Setup & tooling                | Add deps, verify codegen pipeline                             | `flutter pub get` + `dart run build_runner build` succeeds | ✅ Complete |
-| **S2** | Domain entity migration        | Convert `Movie`, `Actor`, `Genre`, `Video` to `@freezed`      | App runs; providers still work; equality works in tests    | Not started |
+| **S2** | Domain entity migration        | Convert `Movie`, `Actor`, `Genre`, `Video` to `@freezed`      | App runs; providers still work; equality works in tests    | ✅ Complete |
 | **S3** | Infrastructure model migration | Convert all `moviedb/` models to `@freezed`                   | Mappers compile; API responses deserialize correctly       | Not started |
 | **S4** | Mapper & serialization cleanup | Remove redundant manual `fromJson`/`toJson`; simplify mappers | No hand-written serialization remains                      | Not started |
 
@@ -80,7 +80,7 @@ S1 ──→ S2 ──→ S4
 | Phase | Description                                 | Slices | Risk                                               |
 | ----- | ------------------------------------------- | ------ | -------------------------------------------------- | ----------- |
 | **1** | Add packages, verify build pipeline         | S1     | Low                                                | ✅ Complete |
-| **2** | Migrate domain entities                     | S2     | Medium — computed getters need private constructor |
+| **2** | Migrate domain entities                     | S2     | Medium — computed getters need private constructor | ✅ Complete |
 | **3** | Migrate infrastructure models               | S3     | Medium — nested models require ordering            |
 | **4** | Cleanup mappers and dead serialization code | S4     | Low                                                |
 

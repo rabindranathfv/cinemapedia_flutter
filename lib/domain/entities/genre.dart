@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class Genre {
-  final int id;
-  final String name;
+part 'genre.freezed.dart';
+part 'genre.g.dart';
 
-  Genre({required this.id, required this.name});
+@freezed
+abstract class Genre with _$Genre {
+  const factory Genre({required int id, required String name}) = _Genre;
+
+  // Required for custom getters
+  const Genre._();
+
+  factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
 
   /// Icon mapped to TMDB genre IDs
   IconData get icon => _genreIcons[id] ?? Icons.movie;
