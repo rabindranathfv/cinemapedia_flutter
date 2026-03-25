@@ -42,13 +42,11 @@ class MoviesFavoriteNotifier extends Notifier<Map<String, Movie>> {
   void toggleFavorite(Movie movie) {
     final String movieId = movie.id.toString();
     if (state.containsKey(movieId)) {
-      print('Removing movie from favorites: ${movie.title} (ID: $movieId)');
       state = {...state}..remove(movieId);
     } else {
-      print('adding movie to favorites: ${movie.title} (ID: $movieId)');
       state = {...state, movieId: movie};
     }
-    _saveToPrefs(); // persist after every change
+    _saveToPrefs();
   }
 
   bool isFavorite(Movie movie) {

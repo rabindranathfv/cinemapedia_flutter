@@ -7,8 +7,7 @@ import 'package:cinemapedia_flutter/infraestructure/mappers/genre_mapper.dart';
 import 'package:cinemapedia_flutter/infraestructure/mappers/movie_mapper.dart';
 import 'package:cinemapedia_flutter/infraestructure/mappers/video_mapper.dart';
 import 'package:cinemapedia_flutter/infraestructure/models/moviedb/genre_moviedb.dart';
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_details.dart'
-    hide Genre;
+import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_details.dart';
 import 'package:cinemapedia_flutter/infraestructure/models/moviedb/moviedb_response.dart';
 import 'package:cinemapedia_flutter/infraestructure/models/moviedb/video_moviedb.dart';
 import 'package:dio/dio.dart';
