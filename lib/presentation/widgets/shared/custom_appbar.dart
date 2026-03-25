@@ -1,6 +1,5 @@
 import 'package:cinemapedia_flutter/domain/entities/movie.dart';
 import 'package:cinemapedia_flutter/presentation/delegates/search_movie_delegate.dart';
-import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movies_repository_provider.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/search/search_movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

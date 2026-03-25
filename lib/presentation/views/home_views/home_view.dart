@@ -1,6 +1,4 @@
-import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movies_slideshow_provider.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
-import 'package:cinemapedia_flutter/presentation/screen/providers/shared_preferences/shared_preferences_provider.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/movies/movie_horizontal_list_view.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/movies/movies_slideshow.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/shared/custom_appbar.dart';
@@ -32,7 +30,6 @@ class HomeViewState extends ConsumerState<HomeView> {
     final popularMovies = ref.watch(popularMoviesProvider);
     final topRatedMovies = ref.watch(topRatedMoviesProvider);
     final upComingMovies = ref.watch(upcomingMoviesProvider);
-    final prefs = ref.read(sharedPreferencesProvider.future);
 
     return CustomScrollView(
       slivers: [

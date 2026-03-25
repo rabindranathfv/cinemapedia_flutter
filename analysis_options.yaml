@@ -1,1 +1,6 @@
 include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    # Known false-positive: @JsonKey on freezed factory constructor params is correct usage
+    invalid_annotation_target: ignore
