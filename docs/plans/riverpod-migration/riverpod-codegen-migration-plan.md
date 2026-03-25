@@ -1,6 +1,6 @@
 # Riverpod Codegen Migration — Plan
 
-> **Last updated:** 2026-03-25 | **Status:** IN PROGRESS (S1 ✅)
+> **Last updated:** 2026-03-25 | **Status:** IN PROGRESS (S1 ✅, S2 ✅)
 
 ## Summary
 
@@ -67,7 +67,7 @@ The work spans 6 vertical slices covering pubspec cleanup, simple providers, mov
 | Slice  | Description                     | Parts                                                                         | Demo                                                       | Status      |
 | ------ | ------------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
 | **S1** | Fix pubspec & verify pipeline   | Fix deps section, run codegen                                                 | `flutter pub get` + `dart run build_runner build` succeeds | ✅ Complete |
-| **S2** | Repository & utility providers  | `movieRepository`, `actorsRepository`, `sharedPreferences`, `moviesSlideshow` | All 4 providers codegen-declared; app compiles             | Not started |
+| **S2** | Repository & utility providers  | `movieRepository`, `actorsRepository`, `sharedPreferences`, `moviesSlideshow` | All 4 providers codegen-declared; app compiles             | ✅ Complete |
 | **S3** | Movie list & genre notifiers    | `nowPlaying`, `popular`, `topRated`, `upcoming`, `genres`, `moviesByGenre`    | Home view loads; pagination still works                    | Not started |
 | **S4** | Map-keyed & favorites notifiers | `movieInfo`, `movieVideos`, `similarMovies`, `favorites`                      | Movie detail screen loads; favorites persist               | Not started |
 | **S5** | Legacy provider migration       | `actorsByMovie`, `searchMovies`, `searchQuery`                                | Search works; actors load; no legacy imports left          | Not started |
@@ -95,7 +95,7 @@ S1 ──→ S2 ──→ S3 ──→ S6
 | Phase | Description                                    | Slices | Risk     | Status      |
 | ----- | ---------------------------------------------- | ------ | -------- | ----------- |
 | **1** | Fix pubspec; verify build pipeline             | S1     | Low      | ✅ Complete |
-| **2** | Migrate repository & utility providers         | S2     | Low      | Not started |
+| **2** | Migrate repository & utility providers         | S2     | Low      | ✅ Complete |
 | **3** | Migrate movie list & genre notifiers           | S3     | Medium   | Not started |
 | **4** | Migrate map-keyed notifiers + favorites        | S4     | Medium   | Not started |
 | **5** | Migrate legacy `StateNotifier` providers       | S5     | **High** | Not started |
