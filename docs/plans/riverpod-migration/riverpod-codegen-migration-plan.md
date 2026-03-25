@@ -1,6 +1,6 @@
 # Riverpod Codegen Migration — Plan
 
-> **Last updated:** 2026-03-25 | **Status:** IN PROGRESS (S1 ✅, S2 ✅, S3 ✅, S4 ✅)
+> **Last updated:** 2026-03-25 | **Status:** IN PROGRESS (S1 ✅, S2 ✅, S3 ✅, S4 ✅, S5 ✅)
 
 ## Summary
 
@@ -70,7 +70,7 @@ The work spans 6 vertical slices covering pubspec cleanup, simple providers, mov
 | **S2** | Repository & utility providers  | `movieRepository`, `actorsRepository`, `sharedPreferences`, `moviesSlideshow` | All 4 providers codegen-declared; app compiles             | ✅ Complete |
 | **S3** | Movie list & genre notifiers    | `nowPlaying`, `popular`, `topRated`, `upcoming`, `genres`, `moviesByGenre`    | Home view loads; pagination still works                    | ✅ Complete |
 | **S4** | Map-keyed & favorites notifiers | `movieInfo`, `movieVideos`, `similarMovies`, `favorites`                      | Movie detail screen loads; favorites persist               | ✅ Complete |
-| **S5** | Legacy provider migration       | `actorsByMovie`, `searchMovies`, `searchQuery`                                | Search works; actors load; no legacy imports left          | Not started |
+| **S5** | Legacy provider migration       | `actorsByMovie`, `searchMovies`, `searchQuery`                                | Search works; actors load; no legacy imports left          | ✅ Complete |
 | **S6** | Cleanup                         | Barrel file, anti-pattern fixes, final build                                  | `riverpod_lint` reports no warnings                        | Not started |
 
 ### Slice Dependencies
@@ -98,7 +98,7 @@ S1 ──→ S2 ──→ S3 ──→ S6
 | **2** | Migrate repository & utility providers         | S2     | Low      | ✅ Complete |
 | **3** | Migrate movie list & genre notifiers           | S3     | Medium   | ✅ Complete |
 | **4** | Migrate map-keyed notifiers + favorites        | S4     | Medium   | ✅ Complete |
-| **5** | Migrate legacy `StateNotifier` providers       | S5     | **High** | Not started |
+| **5** | Migrate legacy `StateNotifier` providers       | S5     | **High** | ✅ Complete |
 | **6** | Barrel cleanup, lint fixes, final verification | S6     | Low      | Not started |
 
 ---
