@@ -1,0 +1,27 @@
+import 'package:cinemapedia_flutter/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movies_repository_provider.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+
+part 'popular_movies_provider.g.dart';
+
+@Riverpod(keepAlive: true)
+class PopularMovies extends _$PopularMovies {
+  int _currentPage = 0;
+  bool _isLoading = false;
+
+  @override
+  List<Movie> build() => [];
+
+  Future<void> loadNextPage() async {
+    if (_isLoading) return;
+
+    _isLoading = true;
+    _currentPage++;
+    final movies = await ref
+        .read(movieRepositoryProvider)
+        .getPopular(page: _currentPage);
+    state = [...state, ...movies];
+    await Future.delayed(const Duration(milliseconds: 300));
+    _isLoading = false;
+  }
+}
