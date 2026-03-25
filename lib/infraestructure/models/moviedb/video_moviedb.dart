@@ -1,38 +1,23 @@
-class VideoMovieDB {
-  final String id;
-  final String iso6391;
-  final String iso31661;
-  final String key;
-  final String name;
-  final String site;
-  final int size;
-  final String type;
-  final bool official;
-  final String publishedAt;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  VideoMovieDB({
-    required this.id,
-    required this.iso6391,
-    required this.iso31661,
-    required this.key,
-    required this.name,
-    required this.site,
-    required this.size,
-    required this.type,
-    required this.official,
-    required this.publishedAt,
-  });
+part 'video_moviedb.freezed.dart';
+part 'video_moviedb.g.dart';
 
-  factory VideoMovieDB.fromJson(Map<String, dynamic> json) => VideoMovieDB(
-    id: json['id'] ?? '',
-    iso6391: json['iso_639_1'] ?? '',
-    iso31661: json['iso_3166_1'] ?? '',
-    key: json['key'] ?? '',
-    name: json['name'] ?? '',
-    site: json['site'] ?? '',
-    size: json['size'] ?? 0,
-    type: json['type'] ?? '',
-    official: json['official'] ?? false,
-    publishedAt: json['published_at'] ?? '',
-  );
+@freezed
+abstract class VideoMovieDB with _$VideoMovieDB {
+  const factory VideoMovieDB({
+    @Default('') String id,
+    @JsonKey(name: 'iso_639_1') @Default('') String iso6391,
+    @JsonKey(name: 'iso_3166_1') @Default('') String iso31661,
+    @Default('') String key,
+    @Default('') String name,
+    @Default('') String site,
+    @Default(0) int size,
+    @Default('') String type,
+    @Default(false) bool official,
+    @JsonKey(name: 'published_at') @Default('') String publishedAt,
+  }) = _VideoMovieDB;
+
+  factory VideoMovieDB.fromJson(Map<String, dynamic> json) =>
+      _$VideoMovieDBFromJson(json);
 }

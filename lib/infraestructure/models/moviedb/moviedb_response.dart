@@ -1,57 +1,27 @@
 import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_moviedb.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class MovieDbResponse {
-  MovieDbResponse({
-    required this.dates,
-    required this.page,
-    required this.results,
-    required this.totalPages,
-    required this.totalResults,
-  });
+part 'moviedb_response.freezed.dart';
+part 'moviedb_response.g.dart';
 
-  final Dates? dates;
-  final int page;
-  final List<MovieMovieDB> results;
-  final int totalPages;
-  final int totalResults;
+@freezed
+abstract class MovieDbResponse with _$MovieDbResponse {
+  const factory MovieDbResponse({
+    Dates? dates,
+    @Default(0) int page,
+    @Default([]) List<MovieMovieDB> results,
+    @JsonKey(name: 'total_pages') @Default(0) int totalPages,
+    @JsonKey(name: 'total_results') @Default(0) int totalResults,
+  }) = _MovieDbResponse;
 
   factory MovieDbResponse.fromJson(Map<String, dynamic> json) =>
-      MovieDbResponse(
-        dates: json["dates"] != null ? Dates.fromJson(json["dates"]) : null,
-        page: json["page"],
-        results: List<MovieMovieDB>.from(
-            json["results"].map((x) => MovieMovieDB.fromJson(x))),
-        totalPages: json["total_pages"],
-        totalResults: json["total_results"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        "dates": dates == null ? null : dates!.toJson(),
-        "page": page,
-        "results": List<dynamic>.from(results.map((x) => x.toJson())),
-        "total_pages": totalPages,
-        "total_results": totalResults,
-      };
+      _$MovieDbResponseFromJson(json);
 }
 
-class Dates {
-  Dates({
-    required this.maximum,
-    required this.minimum,
-  });
+@freezed
+abstract class Dates with _$Dates {
+  const factory Dates({required DateTime maximum, required DateTime minimum}) =
+      _Dates;
 
-  final DateTime maximum;
-  final DateTime minimum;
-
-  factory Dates.fromJson(Map<String, dynamic> json) => Dates(
-        maximum: DateTime.parse(json["maximum"]),
-        minimum: DateTime.parse(json["minimum"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "maximum":
-            "${maximum.year.toString().padLeft(4, '0')}-${maximum.month.toString().padLeft(2, '0')}-${maximum.day.toString().padLeft(2, '0')}",
-        "minimum":
-            "${minimum.year.toString().padLeft(4, '0')}-${minimum.month.toString().padLeft(2, '0')}-${minimum.day.toString().padLeft(2, '0')}",
-      };
+  factory Dates.fromJson(Map<String, dynamic> json) => _$DatesFromJson(json);
 }

@@ -1,68 +1,41 @@
-class MovieMovieDB {
-  MovieMovieDB({
-    required this.adult,
-    required this.backdropPath,
-    required this.genreIds,
-    required this.id,
-    required this.originalLanguage,
-    required this.originalTitle,
-    required this.overview,
-    required this.popularity,
-    required this.posterPath,
-    required this.releaseDate,
-    required this.title,
-    required this.video,
-    required this.voteAverage,
-    required this.voteCount,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final bool adult;
-  final String backdropPath;
-  final List<int> genreIds;
-  final int id;
-  final String originalLanguage;
-  final String originalTitle;
-  final String overview;
-  final double popularity;
-  final String posterPath;
-  final DateTime releaseDate;
-  final String title;
-  final bool video;
-  final double voteAverage;
-  final int voteCount;
+part 'movie_moviedb.freezed.dart';
+part 'movie_moviedb.g.dart';
 
-  factory MovieMovieDB.fromJson(Map<String, dynamic> json) => MovieMovieDB(
-    adult: json["adult"] ?? false,
-    backdropPath: json["backdrop_path"] ?? '',
-    genreIds: List<int>.from(json["genre_ids"].map((x) => x)),
-    id: json["id"],
-    originalLanguage: json["original_language"],
-    originalTitle: json["original_title"],
-    overview: json["overview"] ?? '',
-    popularity: json["popularity"]?.toDouble(),
-    posterPath: json["poster_path"] ?? '',
-    releaseDate: DateTime.tryParse(json["release_date"] ?? '') ?? DateTime(0),
-    title: json["title"],
-    video: json["video"],
-    voteAverage: json["vote_average"]?.toDouble(),
-    voteCount: json["vote_count"],
-  );
+@freezed
+abstract class MovieMovieDB with _$MovieMovieDB {
+  const factory MovieMovieDB({
+    @Default(false) bool adult,
+    @JsonKey(name: 'backdrop_path') @Default('') String backdropPath,
+    @JsonKey(name: 'genre_ids') @Default([]) List<int> genreIds,
+    required int id,
+    @JsonKey(name: 'original_language') @Default('') String originalLanguage,
+    @JsonKey(name: 'original_title') @Default('') String originalTitle,
+    @Default('') String overview,
+    @Default(0.0) double popularity,
+    @JsonKey(name: 'poster_path') @Default('') String posterPath,
+    @_DateTimeSerializer()
+    @JsonKey(name: 'release_date')
+    required DateTime releaseDate,
+    @Default('') String title,
+    @Default(false) bool video,
+    @JsonKey(name: 'vote_average') @Default(0.0) double voteAverage,
+    @JsonKey(name: 'vote_count') @Default(0) int voteCount,
+  }) = _MovieMovieDB;
 
-  Map<String, dynamic> toJson() => {
-    "adult": adult,
-    "backdrop_path": backdropPath,
-    "genre_ids": List<dynamic>.from(genreIds.map((x) => x)),
-    "id": id,
-    "original_language": originalLanguage,
-    "original_title": originalTitle,
-    "overview": overview,
-    "popularity": popularity,
-    "poster_path": posterPath,
-    "release_date":
-        "${releaseDate.year.toString().padLeft(4, '0')}-${releaseDate.month.toString().padLeft(2, '0')}-${releaseDate.day.toString().padLeft(2, '0')}",
-    "title": title,
-    "video": video,
-    "vote_average": voteAverage,
-    "vote_count": voteCount,
-  };
+  factory MovieMovieDB.fromJson(Map<String, dynamic> json) =>
+      _$MovieMovieDBFromJson(json);
+}
+
+class _DateTimeSerializer implements JsonConverter<DateTime, dynamic> {
+  const _DateTimeSerializer();
+
+  @override
+  DateTime fromJson(dynamic value) =>
+      DateTime.tryParse(value?.toString() ?? '') ?? DateTime(0);
+
+  @override
+  String toJson(DateTime date) =>
+      '${date.year.toString().padLeft(4, '0')}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
 }

@@ -1,9 +1,13 @@
-class GenreMovieDB {
-  final int id;
-  final String name;
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  GenreMovieDB({required this.id, required this.name});
+part 'genre_moviedb.freezed.dart';
+part 'genre_moviedb.g.dart';
+
+@freezed
+abstract class GenreMovieDB with _$GenreMovieDB {
+  const factory GenreMovieDB({required int id, @Default('') String name}) =
+      _GenreMovieDB;
 
   factory GenreMovieDB.fromJson(Map<String, dynamic> json) =>
-      GenreMovieDB(id: json['id'], name: json['name'] ?? '');
+      _$GenreMovieDBFromJson(json);
 }
