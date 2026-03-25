@@ -1,6 +1,6 @@
 # Freezed Domain Models — Migration Plan
 
-> **Last updated:** 2026-03-25 | **Status:** NOT STARTED
+> **Last updated:** 2026-03-25 | **Status:** IN PROGRESS (S1 ✅ Complete, S2–S4 Not started)
 
 ## Summary
 
@@ -56,7 +56,7 @@ The work spans 4 vertical slices covering `pubspec.yaml` setup, domain entities,
 
 | Slice  | Description                    | Parts                                                         | Demo                                                       | Status      |
 | ------ | ------------------------------ | ------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| **S1** | Setup & tooling                | Add deps, verify codegen pipeline                             | `flutter pub get` + `dart run build_runner build` succeeds | Not started |
+| **S1** | Setup & tooling                | Add deps, verify codegen pipeline                             | `flutter pub get` + `dart run build_runner build` succeeds | ✅ Complete |
 | **S2** | Domain entity migration        | Convert `Movie`, `Actor`, `Genre`, `Video` to `@freezed`      | App runs; providers still work; equality works in tests    | Not started |
 | **S3** | Infrastructure model migration | Convert all `moviedb/` models to `@freezed`                   | Mappers compile; API responses deserialize correctly       | Not started |
 | **S4** | Mapper & serialization cleanup | Remove redundant manual `fromJson`/`toJson`; simplify mappers | No hand-written serialization remains                      | Not started |
@@ -78,8 +78,8 @@ S1 ──→ S2 ──→ S4
 ## Suggested Phasing
 
 | Phase | Description                                 | Slices | Risk                                               |
-| ----- | ------------------------------------------- | ------ | -------------------------------------------------- |
-| **1** | Add packages, verify build pipeline         | S1     | Low                                                |
+| ----- | ------------------------------------------- | ------ | -------------------------------------------------- | ----------- |
+| **1** | Add packages, verify build pipeline         | S1     | Low                                                | ✅ Complete |
 | **2** | Migrate domain entities                     | S2     | Medium — computed getters need private constructor |
 | **3** | Migrate infrastructure models               | S3     | Medium — nested models require ordering            |
 | **4** | Cleanup mappers and dead serialization code | S4     | Low                                                |
@@ -90,11 +90,12 @@ S1 ──→ S2 ──→ S4
 
 ### Tasks
 
-- [ ] Add `freezed_annotation: ^3.1.0` to `dependencies` in `pubspec.yaml`
-- [ ] Add `freezed: ^3.2.3` to `dev_dependencies` in `pubspec.yaml`
-- [ ] Add `json_serializable: ^6.11.1` to `dev_dependencies` in `pubspec.yaml`
-- [ ] Run `flutter pub get`
-- [ ] Verify `dart run build_runner build --delete-conflicting-outputs` completes without errors
+- [x] Add `freezed_annotation: ^3.1.0` to `dependencies` in `pubspec.yaml`
+- [x] Add `freezed: ^3.2.3` to `dev_dependencies` in `pubspec.yaml`
+- [x] Add `json_serializable: ^6.11.1` to `dev_dependencies` in `pubspec.yaml`
+- [x] Move `build_runner` from `dependencies` to `dev_dependencies`
+- [x] Run `flutter pub get`
+- [x] Verify `dart run build_runner build --delete-conflicting-outputs` completes without errors
 
 ### Expected `pubspec.yaml` additions
 
