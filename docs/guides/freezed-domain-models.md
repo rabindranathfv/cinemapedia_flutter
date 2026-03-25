@@ -96,24 +96,24 @@ abstract class AppUser with _$AppUser {
       _$AppUserFromJson(json);
 }
 
-enum AppUserType { consumer, producer }
+enum AppUserType { guest, member }
 ```
 
 ### What you get for free
 
 ```dart
 // Create
-final user = AppUser(uid: '123', userType: AppUserType.producer);
+final user = AppUser(uid: '123', userType: AppUserType.member);
 
 // Immutable copy
-final updated = user.copyWith(userType: AppUserType.consumer);
+final updated = user.copyWith(userType: AppUserType.guest);
 
 // Equality (value-based, not reference-based)
-AppUser(uid: '123', userType: AppUserType.producer) ==
-    AppUser(uid: '123', userType: AppUserType.producer); // true
+AppUser(uid: '123', userType: AppUserType.member) ==
+    AppUser(uid: '123', userType: AppUserType.member); // true
 
 // Serialization
-final json = user.toJson(); // {'uid': '123', 'userType': 'producer'}
+final json = user.toJson(); // {'uid': '123', 'userType': 'member'}
 final fromJson = AppUser.fromJson(json);
 ```
 
@@ -138,12 +138,12 @@ abstract class AppNotification with _$AppNotification {
     required String id,
     required String userId,
     required AppNotificationType type,
-    required String entityId,
+    required String postId,
     required String content,
     required AppNotificationStatus status,
-    @TimestampSerializer() required DateTime sendDate,
+    @TimestampSerializer() required DateTime sentAt,
     @TimestampSerializer() DateTime? expireAt,
-    String? companyId,
+    String? imageUrl,
   }) = _AppNotification;
 
   factory AppNotification.fromJson(Map<String, dynamic> json) =>
@@ -151,23 +151,23 @@ abstract class AppNotification with _$AppNotification {
 }
 
 enum AppNotificationType {
-  bid,
-  quote,
-  newQuote,
-  task,
-  message,
-  quoteCancelled,
-  confirmedTaskExecution,
-  disputedTaskExecution,
-  completedTaskExecution,
-  cancelledServiceRequest,
+  like,
+  comment,
+  reply,
+  follow,
+  mention,
+  systemAlert,
+  reminder,
+  newMessage,
+  friendRequest,
+  friendRequestAccepted,
+  paymentReceived,
   paymentFailed,
-  paymentExpired,
-  serviceAboutToStart,
-  serviceStartsToday,
-  serviceEndsToday,
-  serviceDelayYesterday,
-  interestConfirmationCheck,
+  uploadComplete,
+  uploadFailed,
+  contentReady,
+  scheduledEvent,
+  promotionalOffer,
 }
 
 enum AppNotificationStatus { unread, read }
@@ -176,7 +176,7 @@ enum AppNotificationStatus { unread, read }
 ### Key patterns
 
 - **`@TimestampSerializer()`** — Annotates `DateTime` fields that come from Firestore as `Timestamp` objects. The custom serializer handles the conversion.
-- **Optional fields** — Use `Type?` syntax (e.g., `DateTime? expireAt`, `String? companyId`). These default to `null`.
+- **Optional fields** — Use `Type?` syntax (e.g., `DateTime? expireAt`, `String? imageUrl`). These default to `null`.
 - **Multiple enums** — Define enums in the same file when they are tightly coupled to the model.
 
 ### Writing a Custom Serializer
@@ -203,50 +203,50 @@ class TimestampSerializer implements JsonConverter<DateTime, dynamic> {
 
 A domain model with `@Default` values, a private constructor for custom getters/methods, nested model types, and a custom enum serializer.
 
-**File:** `lib/src/domain/bid/app_bid_installment.dart`
+**File:** `lib/src/domain/orders/app_order_item.dart`
 
 ```dart
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:core/src/serializers/firestore_timestamp_serializer.dart';
 
-part 'app_bid_installment.freezed.dart';
-part 'app_bid_installment.g.dart';
+part 'app_order_item.freezed.dart';
+part 'app_order_item.g.dart';
 
 @freezed
-abstract class AppBidInstallment with _$AppBidInstallment {
-  const factory AppBidInstallment({
+abstract class AppOrderItem with _$AppOrderItem {
+  const factory AppOrderItem({
     required String id,
 
-    @Default(AppBidInstallmentType.milestone)
-    @_InstallmentTypeSerializer()
-    AppBidInstallmentType type,
+    @Default(AppOrderItemType.standard)
+    @_OrderItemTypeSerializer()
+    AppOrderItemType type,
 
-    required int amount,
+    required int quantity,
 
-    @Default(AppBidInstallmentStatus.pending)
-    @_InstallmentStatusSerializer()
-    AppBidInstallmentStatus status,
+    @Default(AppOrderItemStatus.pending)
+    @_OrderItemStatusSerializer()
+    AppOrderItemStatus status,
 
-    String? orderId,
+    String? couponCode,
     String? transactionId,
-    String? chargebackReasonCode,
+    String? cancellationReason,
 
     @NullableFirestoreTimestampSerializer() DateTime? createdAt,
     @NullableFirestoreTimestampSerializer() DateTime? updatedAt,
-  }) = _AppBidInstallment;
+  }) = _AppOrderItem;
 
   // Required for custom getters/methods
-  const AppBidInstallment._();
+  const AppOrderItem._();
 
-  factory AppBidInstallment.fromJson(Map<String, dynamic> json) =>
-      _$AppBidInstallmentFromJson(json);
+  factory AppOrderItem.fromJson(Map<String, dynamic> json) =>
+      _$AppOrderItemFromJson(json);
 
   // Custom getters
-  bool get isMilestone => type == AppBidInstallmentType.milestone;
-  bool get isExtra => type == AppBidInstallmentType.extra;
-  bool get isRefund => type == AppBidInstallmentType.refund;
-  int get absoluteAmount => amount.abs();
-  bool get hasFailed => status == AppBidInstallmentStatus.failed;
+  bool get isStandard => type == AppOrderItemType.standard;
+  bool get isExpress => type == AppOrderItemType.express;
+  bool get isDigital => type == AppOrderItemType.digital;
+  bool get hasFailed => status == AppOrderItemStatus.failed;
+  bool get isCancelled => status == AppOrderItemStatus.cancelled;
 }
 ```
 
@@ -255,10 +255,10 @@ abstract class AppBidInstallment with _$AppBidInstallment {
 - **`@Default(value)`** — Provides a default value, making the field optional in the constructor:
   ```dart
   // Both are valid:
-  AppBidInstallment(id: '1', amount: 5000);
-  AppBidInstallment(id: '1', amount: 5000, type: AppBidInstallmentType.extra);
+  AppOrderItem(id: '1', quantity: 2);
+  AppOrderItem(id: '1', quantity: 2, type: AppOrderItemType.express);
   ```
-- **Private constructor `const AppBidInstallment._();`** — Required when you add custom getters or methods to the class. Without this line, Dart won't let you define instance members.
+- **Private constructor `const AppOrderItem._();`** — Required when you add custom getters or methods to the class. Without this line, Dart won't let you define instance members.
 - **Custom enum serializer** — Use `JsonConverter<EnumType, String>` when the backend uses different string values than the Dart enum names.
 - **`@NullableFirestoreTimestampSerializer()`** — Variant of the timestamp serializer that handles `null` values.
 
