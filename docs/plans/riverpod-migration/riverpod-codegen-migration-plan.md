@@ -1,6 +1,6 @@
 # Riverpod Codegen Migration — Plan
 
-> **Last updated:** 2026-03-25 | **Status:** NOT STARTED
+> **Last updated:** 2026-03-25 | **Status:** IN PROGRESS (S1 ✅)
 
 ## Summary
 
@@ -66,7 +66,7 @@ The work spans 6 vertical slices covering pubspec cleanup, simple providers, mov
 
 | Slice  | Description                     | Parts                                                                         | Demo                                                       | Status      |
 | ------ | ------------------------------- | ----------------------------------------------------------------------------- | ---------------------------------------------------------- | ----------- |
-| **S1** | Fix pubspec & verify pipeline   | Fix deps section, run codegen                                                 | `flutter pub get` + `dart run build_runner build` succeeds | Not started |
+| **S1** | Fix pubspec & verify pipeline   | Fix deps section, run codegen                                                 | `flutter pub get` + `dart run build_runner build` succeeds | ✅ Complete |
 | **S2** | Repository & utility providers  | `movieRepository`, `actorsRepository`, `sharedPreferences`, `moviesSlideshow` | All 4 providers codegen-declared; app compiles             | Not started |
 | **S3** | Movie list & genre notifiers    | `nowPlaying`, `popular`, `topRated`, `upcoming`, `genres`, `moviesByGenre`    | Home view loads; pagination still works                    | Not started |
 | **S4** | Map-keyed & favorites notifiers | `movieInfo`, `movieVideos`, `similarMovies`, `favorites`                      | Movie detail screen loads; favorites persist               | Not started |
@@ -94,7 +94,7 @@ S1 ──→ S2 ──→ S3 ──→ S6
 
 | Phase | Description                                    | Slices | Risk     | Status      |
 | ----- | ---------------------------------------------- | ------ | -------- | ----------- |
-| **1** | Fix pubspec; verify build pipeline             | S1     | Low      | Not started |
+| **1** | Fix pubspec; verify build pipeline             | S1     | Low      | ✅ Complete |
 | **2** | Migrate repository & utility providers         | S2     | Low      | Not started |
 | **3** | Migrate movie list & genre notifiers           | S3     | Medium   | Not started |
 | **4** | Migrate map-keyed notifiers + favorites        | S4     | Medium   | Not started |
@@ -107,10 +107,10 @@ S1 ──→ S2 ──→ S3 ──→ S6
 
 ### Tasks
 
-- [ ] Move `riverpod_generator: ^4.0.0+1` from `dependencies` to `dev_dependencies`
-- [ ] Move `riverpod_lint: ^3.0.0-dev.4` from `dependencies` to `dev_dependencies`
-- [ ] Run `flutter pub get`
-- [ ] Run `dart run build_runner build --delete-conflicting-outputs` — should complete with 0 outputs (no `@riverpod` files yet)
+- [x] Move `riverpod_generator: ^4.0.0+1` from `dependencies` to `dev_dependencies`
+- [x] Move `riverpod_lint: ^3.0.0-dev.4` from `dependencies` to `dev_dependencies`
+- [x] Run `flutter pub get`
+- [x] Run `dart run build_runner build --delete-conflicting-outputs` — completed in 10s; 0 new outputs (expected); pipeline verified ✅
 
 ### Expected `pubspec.yaml` after S1
 
