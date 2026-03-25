@@ -58,11 +58,11 @@ The `part` directive is mandatory — the `.g.dart` file contains the generated 
 
 The generated provider name appends `Provider` to the function/class name:
 
-| Source name                                | Generated provider                         |
-| ------------------------------------------ | ------------------------------------------ |
-| `quoteTemplatesRepository` (function)      | `quoteTemplatesRepositoryProvider`         |
-| `MarketNotifier` (class)                   | `marketNotifierProvider`                   |
-| `recommendedQuotations` (function + param) | `recommendedQuotationsProvider(companyId)` |
+| Source name                             | Generated provider                       |
+| --------------------------------------- | ---------------------------------------- |
+| `productsRepository` (function)         | `productsRepositoryProvider`             |
+| `LocaleNotifier` (class)                | `localeNotifierProvider`                 |
+| `productsByCategory` (function + param) | `productsByCategoryProvider(categoryId)` |
 
 ---
 
@@ -83,21 +83,20 @@ The generated provider name appends `Provider` to the function/class name:
 
 The most common pattern — a function that returns a repository instance.
 
-**File:** `lib/src/core/providers/quote_templates_repository.dart`
+**File:** `lib/src/core/providers/products_repository_provider.dart`
 
 ```dart
-import 'package:my_app/src/core/providers/firebase_service.dart';
+import 'package:my_app/src/core/providers/http_client_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:core/impl.dart' show FirestoreQuoteTemplatesRepository;
-import 'package:core/core.dart' show QuoteTemplatesRepository;
+import 'package:my_app/src/features/products/data/products_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'quote_templates_repository.g.dart';
+part 'products_repository_provider.g.dart';
 
 @riverpod
-QuoteTemplatesRepository quoteTemplatesRepository(Ref ref) {
-  return FirestoreQuoteTemplatesRepository(
-    firestore: ref.read(firestoreProvider),
+ProductsRepository productsRepository(Ref ref) {
+  return HttpProductsRepository(
+    client: ref.read(httpClientProvider),
   );
 }
 ```
@@ -111,7 +110,7 @@ QuoteTemplatesRepository quoteTemplatesRepository(Ref ref) {
 ### Consuming in a widget
 
 ```dart
-final repo = ref.watch(quoteTemplatesRepositoryProvider);
+final repo = ref.watch(productsRepositoryProvider);
 ```
 
 ---
@@ -120,61 +119,51 @@ final repo = ref.watch(quoteTemplatesRepositoryProvider);
 
 A class-based provider for async state that survives widget disposal.
 
-**File:** `lib/src/core/providers/market_notifier.dart`
+**File:** `lib/src/core/providers/locale_notifier.dart`
 
 ```dart
-import 'package:my_app/src/core/providers/market_provider.dart';
-import 'package:my_app/src/core/utils/logger.dart';
+import 'package:my_app/src/core/providers/locale_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:core/core.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-part 'market_notifier.g.dart';
+part 'locale_notifier.g.dart';
 
-const kMarketIdKey = 'app_market_code';
+const kLocaleKey = 'app_locale_code';
 
 @Riverpod(keepAlive: true)
-class MarketNotifier extends _$MarketNotifier {
+class LocaleNotifier extends _$LocaleNotifier {
   @override
-  FutureOr<AppMarket?> build() async {
+  FutureOr<Locale?> build() async {
     final prefs = await SharedPreferences.getInstance();
-    final code = prefs.getString(kMarketIdKey);
-    return _findMarketByCode(code);
+    final code = prefs.getString(kLocaleKey);
+    return code != null ? Locale(code) : null;
   }
 
-  Future<AppMarket?> _findMarketByCode(String? code) async {
-    final result = await ref.read(getMarketsProvider.future);
-    return switch (result) {
-      Success(:final value) =>
-        value.firstWhereOrNull((m) => m.code == code),
-      Failure() => null,
-    };
-  }
-
-  Future<void> setMarket(AppMarket market) async {
+  Future<void> setLocale(Locale locale) async {
     final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(kMarketIdKey, market.code);
-    state = AsyncValue.data(market);
+    await prefs.setString(kLocaleKey, locale.languageCode);
+    state = AsyncValue.data(locale);
   }
 }
 ```
 
 ### Key points
 
-- **`@Riverpod(keepAlive: true)`** (uppercase `R`) — the provider stays alive in memory forever. Use for global state (auth, market, locale).
+- **`@Riverpod(keepAlive: true)`** (uppercase `R`) — the provider stays alive in memory forever. Use for global state (auth, locale, theme).
 - **`build()` method** — initializes the state. Equivalent to `FutureProvider` but with mutation methods.
 - **`state = AsyncValue.data(value)`** — how you update state from methods.
-- **`extends _$MarketNotifier`** — the generated base class. Always `_$` + class name.
+- **`extends _$LocaleNotifier`** — the generated base class. Always `_$` + class name.
 
 ### Consuming in a widget
 
 ```dart
 // Watch the async state
-final marketAsync = ref.watch(marketNotifierProvider);
+final localeAsync = ref.watch(localeNotifierProvider);
 
 // Call a method
-ref.read(marketNotifierProvider.notifier).setMarket(selectedMarket);
+ref.read(localeNotifierProvider.notifier).setLocale(selectedLocale);
 ```
 
 ---
@@ -183,42 +172,42 @@ ref.read(marketNotifierProvider.notifier).setMarket(selectedMarket);
 
 A function-based provider that takes parameters and manages its own cache lifetime.
 
-**File:** `lib/src/features/producer/data/matchmaking_provider.dart`
+**File:** `lib/src/features/products/data/products_provider.dart`
 
 ```dart
 import 'dart:async';
 
-import 'package:my_app/src/core/providers/firebase_service.dart';
+import 'package:my_app/src/core/providers/http_client_provider.dart';
 import 'package:my_app/src/core/utils/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:core/core.dart';
+import 'package:my_app/src/features/products/data/products_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'matchmaking_provider.g.dart';
+part 'products_provider.g.dart';
 
 @riverpod
-MatchmakingRepository matchmakingRepository(Ref ref) {
-  final firestore = ref.read(firestoreProvider);
-  return FirestoreMatchmakingRepository(firestore: firestore);
+ProductsRepository productsRepository(Ref ref) {
+  final client = ref.read(httpClientProvider);
+  return HttpProductsRepository(client: client);
 }
 
 @riverpod
-Future<List<String>> recommendedQuotations(
+Future<List<Product>> productsByCategory(
   Ref ref,
-  String companyId,
+  String categoryId,
 ) async {
   final link = ref.keepAlive();
   final timer = Timer(const Duration(minutes: 5), link.close);
   ref.onDispose(timer.cancel);
 
   final result = await ref
-      .watch(matchmakingRepositoryProvider)
-      .getRecommendedQuotations(companyId);
+      .watch(productsRepositoryProvider)
+      .getByCategory(categoryId);
   return switch (result) {
     Success(:final value) => value,
     Failure(:final error) => () {
-      Logger.log('Failed to fetch recommendations for $companyId: $error');
-      return const <String>[];
+      Logger.log('Failed to fetch products for $categoryId: $error');
+      return const <Product>[];
     }(),
   };
 }
@@ -226,7 +215,7 @@ Future<List<String>> recommendedQuotations(
 
 ### Key points
 
-- **Parameters** — any parameter after `Ref ref` turns the provider into a **family**. The generated provider is called with the argument: `recommendedQuotationsProvider(companyId)`.
+- **Parameters** — any parameter after `Ref ref` turns the provider into a **family**. The generated provider is called with the argument: `productsByCategoryProvider(categoryId)`.
 - **`ref.keepAlive()`** — prevents auto-disposal. Returns a `KeepAliveLink` that you can `.close()` later.
 - **`ref.onDispose()`** — cleanup callback. Cancel timers, close streams, release resources.
 - **Cache pattern** — keep alive + timer = cached for 5 minutes, then auto-disposed.
@@ -234,44 +223,42 @@ Future<List<String>> recommendedQuotations(
 ### Consuming in a widget
 
 ```dart
-final quotationsAsync = ref.watch(recommendedQuotationsProvider(companyId));
+final productsAsync = ref.watch(productsByCategoryProvider(categoryId));
 ```
 
 ---
 
 ## Example 4: StreamProvider with Multiple Parameters
 
-A realtime stream provider that watches Firestore for changes.
+A realtime stream provider that watches a remote source for changes.
 
-**File:** `lib/src/features/quotation/data/bids_repository_provider.dart`
+**File:** `lib/src/features/comments/data/comments_provider.dart`
 
 ```dart
 import 'package:my_app/src/core/providers/firebase_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:core/core.dart';
+import 'package:my_app/src/features/comments/data/comments_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'bids_repository_provider.g.dart';
+part 'comments_provider.g.dart';
 
 @Riverpod(keepAlive: true)
-BidsRepository bidsRepository(Ref ref) {
+CommentsRepository commentsRepository(Ref ref) {
   final firestore = ref.watch(firestoreProvider);
-  return FirestoreBidsRepository(firestore: firestore);
+  return FirestoreCommentsRepository(firestore: firestore);
 }
 
 @Riverpod(keepAlive: true)
-Stream<AppBid?> activeBid(
+Stream<List<Comment>> postComments(
   Ref ref,
-  String companyId,
-  String consumerId,
-  String quotationId,
+  String userId,
+  String postId,
 ) {
-  final bidsRepo = ref.watch(bidsRepositoryProvider);
-  return bidsRepo
-      .activeBidStream(
-        companyId: companyId,
-        consumerId: consumerId,
-        quotationId: quotationId,
+  final commentsRepo = ref.watch(commentsRepositoryProvider);
+  return commentsRepo
+      .commentsStream(
+        userId: userId,
+        postId: postId,
       )
       .map(
         (result) => switch (result) {
@@ -285,8 +272,8 @@ Stream<AppBid?> activeBid(
 ### Key points
 
 - **Return `Stream<T>`** — Riverpod automatically converts it to `AsyncValue<T>` for widgets.
-- **Multiple parameters** — all come after `Ref ref`. Consumed as: `activeBidProvider(companyId, consumerId, quotationId)`.
-- **`ref.watch(bidsRepositoryProvider)`** — subscribes to the repository. If it rebuilds, the stream restarts.
+- **Multiple parameters** — all come after `Ref ref`. Consumed as: `postCommentsProvider(userId, postId)`.
+- **`ref.watch(commentsRepositoryProvider)`** — subscribes to the repository. If it rebuilds, the stream restarts.
 
 ---
 
@@ -294,7 +281,7 @@ Stream<AppBid?> activeBid(
 
 A full-featured notifier managing batch operations with internal timers.
 
-**File:** `lib/src/features/notifications/data/producer_notifications_notifier.dart`
+**File:** `lib/src/features/notifications/data/push_notifications_notifier.dart`
 
 ```dart
 import 'dart:async';
@@ -305,14 +292,14 @@ import 'package:my_app/src/features/notifications/data/notifications_repository.
 import 'package:flutter/foundation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-part 'producer_notifications_notifier.g.dart';
+part 'push_notifications_notifier.g.dart';
 
 @Riverpod(keepAlive: true)
-class ProducerNotificationsNotifier extends _$ProducerNotificationsNotifier {
+class PushNotificationsNotifier extends _$PushNotificationsNotifier {
   Timer? _debounceTimer;
   Timer? _pollingTimer;
-  String? _currentUid;
-  List<String> _currentEntityIds = [];
+  String? _currentUserId;
+  List<String> _currentItemIds = [];
 
   @override
   Map<String, String?> build() {
@@ -323,11 +310,11 @@ class ProducerNotificationsNotifier extends _$ProducerNotificationsNotifier {
     return {};
   }
 
-  void requestNotifications(String uid, List<String> entityIds) {
-    _currentUid = uid;
-    _currentEntityIds = entityIds;
+  void requestNotifications(String userId, List<String> itemIds) {
+    _currentUserId = userId;
+    _currentItemIds = itemIds;
 
-    if (entityIds.isEmpty) {
+    if (itemIds.isEmpty) {
       _pollingTimer?.cancel();
       state = {};
       return;
@@ -336,21 +323,21 @@ class ProducerNotificationsNotifier extends _$ProducerNotificationsNotifier {
     _debounceTimer?.cancel();
     _debounceTimer = Timer(
       const Duration(milliseconds: 250),
-      () => _fetchBatch(uid, entityIds),
+      () => _fetchBatch(userId, itemIds),
     );
   }
 
-  Future<void> _fetchBatch(String uid, List<String> entityIds) async {
+  Future<void> _fetchBatch(String userId, List<String> itemIds) async {
     final notifications = await ref
         .read(notificationsRepositoryProvider)
-        .notificationsByEntities(uid, entityIds);
+        .notificationsByItems(userId, itemIds);
 
     final notificationMap = {
-      for (final n in notifications ?? []) n.entityId: n.id,
+      for (final n in notifications ?? []) n.itemId: n.id,
     };
     state = {
-      for (final entityId in entityIds)
-        entityId: notificationMap[entityId],
+      for (final itemId in itemIds)
+        itemId: notificationMap[itemId],
     };
   }
 }
@@ -367,12 +354,12 @@ class ProducerNotificationsNotifier extends _$ProducerNotificationsNotifier {
 
 ```dart
 // Request batch notifications
-ref.read(producerNotificationsNotifierProvider.notifier)
-    .requestNotifications(uid, entityIds);
+ref.read(pushNotificationsNotifierProvider.notifier)
+    .requestNotifications(userId, itemIds);
 
-// Watch a specific entity's notification (selective rebuild)
+// Watch a specific item's notification (selective rebuild)
 final notificationId = ref.watch(
-  producerNotificationsNotifierProvider.select((map) => map[quotationId]),
+  pushNotificationsNotifierProvider.select((map) => map[itemId]),
 );
 ```
 
@@ -385,6 +372,10 @@ final notificationId = ref.watch(
 A reusable widget for standard loading/error/data handling:
 
 ```dart
+import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movie_masonry.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 class AsyncValueWidget<T> extends StatelessWidget {
   const AsyncValueWidget({
     super.key,
@@ -416,10 +407,10 @@ class AsyncValueWidget<T> extends StatelessWidget {
 **Usage:**
 
 ```dart
-AsyncValueWidget<AppMarket?>(
-  value: ref.watch(marketNotifierProvider),
+AsyncValueWidget<Locale?>(
+  value: ref.watch(localeNotifierProvider),
   showLoading: true,
-  onData: (market) => Text(market?.name ?? 'No market'),
+  onData: (locale) => Text(locale?.languageCode ?? 'System default'),
 )
 ```
 
@@ -428,8 +419,8 @@ AsyncValueWidget<AppMarket?>(
 For one-off cases or when you need custom loading/error:
 
 ```dart
-ref.watch(marketNotifierProvider).when(
-  data: (market) => Text(market?.name ?? ''),
+ref.watch(localeNotifierProvider).when(
+  data: (locale) => Text(locale?.languageCode ?? ''),
   loading: () => const CircularProgressIndicator(),
   error: (e, _) => Text('Error: $e'),
 )
@@ -502,14 +493,14 @@ class _MyScreenState extends ConsumerState<MyScreen> {
 ### Rules of thumb
 
 ```dart
-// ✅ Watch in build — widget rebuilds when market changes
-final market = ref.watch(marketNotifierProvider);
+// ✅ Watch in build — widget rebuilds when locale changes
+final locale = ref.watch(localeNotifierProvider);
 
 // ✅ Read in callbacks — one-shot action
-onPressed: () => ref.read(marketNotifierProvider.notifier).setMarket(market),
+onPressed: () => ref.read(localeNotifierProvider.notifier).setLocale(selectedLocale),
 
 // ✅ Listen for side effects — navigate on error
-ref.listen(marketNotifierProvider, (prev, next) {
+ref.listen(localeNotifierProvider, (prev, next) {
   if (next.hasError) showErrorSnackbar(context, next.error!);
 });
 
