@@ -12,8 +12,8 @@ The home feature is the app entry point (route `/`). It consists of a shell scre
 
 ## `HomeScreen`
 
-**Type:** `StatelessWidget`  
-**Route name:** `'home_screen'`  
+**Type:** `StatelessWidget`
+**Route name:** `'home_screen'`
 **Constructor:** `required StatefulNavigationShell navigationShell`
 
 A pure shell widget. Renders the active tab branch in the body and delegates navigation to `CustomBottomNavigation`. It holds no state and calls no providers.
