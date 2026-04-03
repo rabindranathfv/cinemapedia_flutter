@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:cinemapedia_flutter/domain/entities/movie.dart';
-import 'package:cinemapedia_flutter/domain/entities/video.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/video.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {

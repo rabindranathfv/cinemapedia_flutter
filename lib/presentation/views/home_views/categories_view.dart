@@ -1,6 +1,6 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia_flutter/domain/entities/genre.dart';
-import 'package:cinemapedia_flutter/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/genre.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/movies/genres_provider.dart';
 import 'package:cinemapedia_flutter/presentation/screen/providers/movies/movies_by_genre_provider.dart';
 import 'package:flutter/material.dart';

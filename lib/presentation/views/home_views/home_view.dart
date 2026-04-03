@@ -1,7 +1,7 @@
 import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/movies/movie_horizontal_list_view.dart';
 import 'package:cinemapedia_flutter/presentation/widgets/movies/movies_slideshow.dart';
-import 'package:cinemapedia_flutter/presentation/widgets/shared/custom_appbar.dart';
+import 'package:cinemapedia_flutter/core/presentation/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

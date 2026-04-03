@@ -1,4 +1,4 @@
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_moviedb.dart';
+import 'package:cinemapedia_flutter/core/data/models/moviedb/movie_moviedb.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'moviedb_response.freezed.dart';

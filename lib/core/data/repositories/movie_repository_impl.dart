@@ -1,8 +1,8 @@
-import 'package:cinemapedia_flutter/domain/datasources/movies_datasource.dart';
-import 'package:cinemapedia_flutter/domain/entities/genre.dart';
-import 'package:cinemapedia_flutter/domain/entities/movie.dart';
-import 'package:cinemapedia_flutter/domain/entities/video.dart';
-import 'package:cinemapedia_flutter/domain/repositories/movies_repository.dart';
+import 'package:cinemapedia_flutter/core/domain/datasources/movies_datasource.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/genre.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/video.dart';
+import 'package:cinemapedia_flutter/core/domain/repositories/movies_repository.dart';
 
 class MovieRepositoryImpl extends MoviesRepository {
   MovieRepositoryImpl({required this.datasource});

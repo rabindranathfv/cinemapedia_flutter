@@ -1,8 +1,8 @@
 // grab the models from infraestructure and transform into an domain in entity
 
-import 'package:cinemapedia_flutter/domain/entities/movie.dart';
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_details.dart';
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_moviedb.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/data/models/moviedb/movie_details.dart';
+import 'package:cinemapedia_flutter/core/data/models/moviedb/movie_moviedb.dart';
 
 class MovieMapper {
   static Movie movieDBtoEntity(MovieMovieDB moviedb) {

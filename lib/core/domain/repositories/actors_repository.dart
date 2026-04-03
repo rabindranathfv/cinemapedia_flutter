@@ -1,4 +1,4 @@
-import 'package:cinemapedia_flutter/domain/entities/actor.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/actor.dart';
 
 abstract class ActorsRepository {
   Future<List<Actor>> getActorsByMovieId(String movieId);

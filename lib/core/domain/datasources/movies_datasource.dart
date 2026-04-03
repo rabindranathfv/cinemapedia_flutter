@@ -1,8 +1,8 @@
-import 'package:cinemapedia_flutter/domain/entities/genre.dart';
-import 'package:cinemapedia_flutter/domain/entities/movie.dart';
-import 'package:cinemapedia_flutter/domain/entities/video.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/genre.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/video.dart';
 
-abstract class MoviesRepository {
+abstract class MovieDatasource {
   Future<List<Movie>> getNowPlaying({int page = 1});
   Future<List<Movie>> getPopular({int page = 1});
   Future<List<Movie>> getTopRated({int page = 1});

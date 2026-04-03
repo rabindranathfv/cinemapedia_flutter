@@ -1,15 +1,15 @@
 import 'package:cinemapedia_flutter/config/enviroment/enviroment.dart';
-import 'package:cinemapedia_flutter/domain/datasources/movies_datasource.dart';
-import 'package:cinemapedia_flutter/domain/entities/genre.dart';
-import 'package:cinemapedia_flutter/domain/entities/movie.dart';
-import 'package:cinemapedia_flutter/domain/entities/video.dart';
-import 'package:cinemapedia_flutter/infraestructure/mappers/genre_mapper.dart';
-import 'package:cinemapedia_flutter/infraestructure/mappers/movie_mapper.dart';
-import 'package:cinemapedia_flutter/infraestructure/mappers/video_mapper.dart';
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/genre_moviedb.dart';
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/movie_details.dart';
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/moviedb_response.dart';
-import 'package:cinemapedia_flutter/infraestructure/models/moviedb/video_moviedb.dart';
+import 'package:cinemapedia_flutter/core/domain/datasources/movies_datasource.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/genre.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/domain/entities/video.dart';
+import 'package:cinemapedia_flutter/core/data/mappers/genre_mapper.dart';
+import 'package:cinemapedia_flutter/core/data/mappers/movie_mapper.dart';
+import 'package:cinemapedia_flutter/core/data/mappers/video_mapper.dart';
+import 'package:cinemapedia_flutter/core/data/models/moviedb/genre_moviedb.dart';
+import 'package:cinemapedia_flutter/core/data/models/moviedb/movie_details.dart';
+import 'package:cinemapedia_flutter/core/data/models/moviedb/moviedb_response.dart';
+import 'package:cinemapedia_flutter/core/data/models/moviedb/video_moviedb.dart';
 import 'package:dio/dio.dart';
 
 class MoviedbDatasource extends MovieDatasource {
