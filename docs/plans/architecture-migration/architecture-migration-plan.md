@@ -144,35 +144,35 @@ Create the `core/` module containing all code shared across features. After this
 
 ### Tasks
 
-- [ ] Create `lib/core/domain/entities/` and move:
+- [x] Create `lib/core/domain/entities/` and move:
   - `movie.dart` (+`.freezed.dart`, `.g.dart`)
   - `actor.dart` (+`.freezed.dart`, `.g.dart`)
   - `genre.dart` (+`.freezed.dart`, `.g.dart`)
   - `video.dart` (+`.freezed.dart`, `.g.dart`)
-- [ ] Create `lib/core/domain/datasources/` and move:
+- [x] Create `lib/core/domain/datasources/` and move:
   - `movies_datasource.dart`
   - `actors_datasource.dart`
-- [ ] Create `lib/core/domain/repositories/` and move:
+- [x] Create `lib/core/domain/repositories/` and move:
   - `movies_repository.dart`
   - `actors_repository.dart`
-- [ ] Create `lib/core/data/datasources/` and move:
+- [x] Create `lib/core/data/datasources/` and move:
   - `moviedb_datasource.dart`
   - `actor_moviedb_datasource.dart`
-- [ ] Create `lib/core/data/models/moviedb/` and move all DTO files:
+- [x] Create `lib/core/data/models/moviedb/` and move all DTO files:
   - `moviedb_response.dart`, `movie_moviedb.dart`, `movie_details.dart`
   - `genre_moviedb.dart`, `video_moviedb.dart`, `credits_response.dart`
   - (+ all `.freezed.dart` and `.g.dart` files)
-- [ ] Create `lib/core/data/mappers/` and move:
+- [x] Create `lib/core/data/mappers/` and move:
   - `movie_mapper.dart`, `actor_mapper.dart`, `genre_mapper.dart`, `video_mapper.dart`
-- [ ] Create `lib/core/data/repositories/` and move:
+- [x] Create `lib/core/data/repositories/` and move:
   - `movie_repository_impl.dart`, `actor_repository_impl.dart`
-- [ ] Create `lib/core/presentation/widgets/` and move:
+- [x] Create `lib/core/presentation/widgets/` and move:
   - `custom_appbar.dart`, `custom_bottom_navigation.dart`
-- [ ] Create `lib/core/presentation/providers/` and move repository providers:
+- [x] Create `lib/core/presentation/providers/` and move repository providers:
   - `movies_repository_provider.dart`, `actors_repository_provider.dart`
-- [ ] Update **all** import paths across the project
-- [ ] Run `dart run build_runner build --delete-conflicting-outputs`
-- [ ] Verify app compiles and runs
+- [x] Update **all** import paths across the project
+- [x] Run `dart run build_runner build --delete-conflicting-outputs`
+- [x] Verify app compiles and runs
 
 ### Verification
 
@@ -191,23 +191,23 @@ Create `lib/features/home/` containing all home screen presentation code.
 
 ### Tasks
 
-- [ ] Create `lib/features/home/presentation/screens/` and move:
+- [x] Create `lib/features/home/presentation/screens/` and move:
   - `home_screen.dart`
-- [ ] Create `lib/features/home/presentation/views/` and move:
+- [x] Create `lib/features/home/presentation/views/` and move:
   - `home_view.dart`
-- [ ] Create `lib/features/home/presentation/providers/` and move:
+- [x] Create `lib/features/home/presentation/providers/` and move:
   - `now_playing_movies_provider.dart` (+`.g.dart`)
   - `popular_movies_provider.dart` (+`.g.dart`)
   - `top_rated_movies_provider.dart` (+`.g.dart`)
   - `upcoming_movies_provider.dart` (+`.g.dart`)
   - `movies_slideshow_provider.dart` (+`.g.dart`)
   - `movies_providers.dart` (barrel)
-- [ ] Create `lib/features/home/presentation/widgets/` and move:
+- [x] Create `lib/features/home/presentation/widgets/` and move:
   - `movies_slideshow.dart`
   - `movie_horizontal_list_view.dart`
   - `movie_poster_link.dart`
-- [ ] Update all import paths
-- [ ] Run codegen and verify
+- [x] Update all import paths
+- [x] Run codegen and verify
 
 ### Verification
 
