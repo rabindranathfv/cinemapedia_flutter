@@ -1,9 +1,9 @@
-export 'movies/now_playing_movies_provider.dart';
-export 'movies/popular_movies_provider.dart';
-export 'movies/top_rated_movies_provider.dart';
-export 'movies/upcoming_movies_provider.dart';
+export 'package:cinemapedia_flutter/features/home/presentation/providers/now_playing_movies_provider.dart';
+export 'package:cinemapedia_flutter/features/home/presentation/providers/popular_movies_provider.dart';
+export 'package:cinemapedia_flutter/features/home/presentation/providers/top_rated_movies_provider.dart';
+export 'package:cinemapedia_flutter/features/home/presentation/providers/upcoming_movies_provider.dart';
 export 'package:cinemapedia_flutter/core/presentation/providers/movies_repository_provider.dart';
-export 'movies/movies_slideshow_provider.dart';
+export 'package:cinemapedia_flutter/features/home/presentation/providers/movies_slideshow_provider.dart';
 export 'movies/movies_info_provider.dart';
 export 'movies/movies_favorites_provider.dart';
 export 'movies/genres_provider.dart';

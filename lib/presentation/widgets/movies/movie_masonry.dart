@@ -1,5 +1,5 @@
 import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
-import 'package:cinemapedia_flutter/presentation/widgets/movies/movie_poster_link.dart';
+import 'package:cinemapedia_flutter/features/home/presentation/widgets/movie_poster_link.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';

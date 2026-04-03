@@ -1,6 +1,6 @@
 # Architecture Migration Plan — Layer-First → Feature-First Clean Architecture + Riverpod
 
-> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅)
+> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅)
 
 ## Summary
 
@@ -127,7 +127,7 @@ S1 ──→ S2 ──→ S7
 | Phase | Description                      | Slices | Risk   | Status         |
 | ----- | -------------------------------- | ------ | ------ | -------------- |
 | **1** | Extract shared code into `core/` | S1     | Medium | ✅ Complete    |
-| **2** | Migrate home feature             | S2     | Medium | 🔲 Not started |
+| **2** | Migrate home feature             | S2     | Medium | ✅ Complete    |
 | **3** | Migrate movie detail feature     | S3     | Low    | 🔲 Not started |
 | **4** | Migrate categories feature       | S4     | Low    | 🔲 Not started |
 | **5** | Migrate search feature           | S5     | Low    | 🔲 Not started |
