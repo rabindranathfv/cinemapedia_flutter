@@ -1,6 +1,6 @@
-import 'package:cinemapedia_flutter/features/categories/presentation/views/categories_view.dart';
-import 'package:cinemapedia_flutter/features/favorites/presentation/views/favorites_view.dart';
-import 'package:cinemapedia_flutter/features/home/presentation/views/home_view.dart';
+import 'package:cinemapedia_flutter/features/categories/presentation/screens/categories_view.dart';
+import 'package:cinemapedia_flutter/features/favorites/presentation/screens/favorites_view.dart';
+import 'package:cinemapedia_flutter/features/home/presentation/screens/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
