@@ -7,7 +7,11 @@ import 'package:go_router/go_router.dart';
 
 import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
 import 'package:cinemapedia_flutter/core/domain/entities/video.dart';
-import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
+import 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/movies_info_provider.dart';
+import 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/actors_by_movie_provider.dart';
+import 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/movie_videos_provider.dart';
+import 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/similar_movies_provider.dart';
+import 'package:cinemapedia_flutter/features/favorites/presentation/providers/movies_favorites_provider.dart';
 
 class MovieScreen extends ConsumerStatefulWidget {
   static const String name = 'movie_screen';

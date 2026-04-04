@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:cinemapedia_flutter/presentation/widgets/widgets.dart';
+import 'package:cinemapedia_flutter/core/presentation/widgets/custom_bottom_navigation.dart';
 import 'package:go_router/go_router.dart';
 
 class HomeScreen extends StatelessWidget {

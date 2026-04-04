@@ -1,4 +1,8 @@
-import 'package:cinemapedia_flutter/presentation/screen/providers/providers.dart';
+import 'package:cinemapedia_flutter/features/home/presentation/providers/now_playing_movies_provider.dart';
+import 'package:cinemapedia_flutter/features/home/presentation/providers/popular_movies_provider.dart';
+import 'package:cinemapedia_flutter/features/home/presentation/providers/top_rated_movies_provider.dart';
+import 'package:cinemapedia_flutter/features/home/presentation/providers/upcoming_movies_provider.dart';
+import 'package:cinemapedia_flutter/features/home/presentation/providers/movies_slideshow_provider.dart';
 import 'package:cinemapedia_flutter/features/home/presentation/widgets/movie_horizontal_list_view.dart';
 import 'package:cinemapedia_flutter/features/home/presentation/widgets/movies_slideshow.dart';
 import 'package:cinemapedia_flutter/core/presentation/widgets/custom_appbar.dart';

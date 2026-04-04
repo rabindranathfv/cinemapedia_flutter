@@ -4,7 +4,8 @@ import 'package:cinemapedia_flutter/features/home/presentation/views/home_view.d
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-import 'package:cinemapedia_flutter/presentation/screen/screens.dart';
+import 'package:cinemapedia_flutter/features/home/presentation/screens/home_screen.dart';
+import 'package:cinemapedia_flutter/features/movie_detail/presentation/screens/movie_screen.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(
   debugLabel: 'root',

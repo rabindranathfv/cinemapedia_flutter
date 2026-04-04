@@ -1,4 +1,4 @@
-import 'package:cinemapedia_flutter/presentation/screen/background_detector.dart';
+import 'package:cinemapedia_flutter/core/presentation/widgets/background_detector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
