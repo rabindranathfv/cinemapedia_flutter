@@ -1,6 +1,6 @@
 # Architecture Migration Plan — Layer-First → Feature-First Clean Architecture + Riverpod
 
-> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅)
+> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅, S3 ✅)
 
 ## Summary
 
@@ -128,7 +128,7 @@ S1 ──→ S2 ──→ S7
 | ----- | -------------------------------- | ------ | ------ | -------------- |
 | **1** | Extract shared code into `core/` | S1     | Medium | ✅ Complete    |
 | **2** | Migrate home feature             | S2     | Medium | ✅ Complete    |
-| **3** | Migrate movie detail feature     | S3     | Low    | 🔲 Not started |
+| **3** | Migrate movie detail feature     | S3     | Low    | ✅ Complete    |
 | **4** | Migrate categories feature       | S4     | Low    | 🔲 Not started |
 | **5** | Migrate search feature           | S5     | Low    | 🔲 Not started |
 | **6** | Migrate favorites feature        | S6     | Low    | 🔲 Not started |
@@ -225,16 +225,16 @@ Create `lib/features/movie_detail/` containing detail screen and its providers.
 
 ### Tasks
 
-- [ ] Create `lib/features/movie_detail/presentation/screens/` and move:
+- [x] Create `lib/features/movie_detail/presentation/screens/` and move:
   - `movie_screen.dart`
-- [ ] Create `lib/features/movie_detail/presentation/providers/` and move:
+- [x] Create `lib/features/movie_detail/presentation/providers/` and move:
   - `movies_info_provider.dart` (+`.g.dart`)
   - `movie_videos_provider.dart` (+`.g.dart`)
   - `similar_movies_provider.dart` (+`.g.dart`)
   - `actors_by_movie_provider.dart` (+`.g.dart`)
-- [ ] Create `lib/features/movie_detail/presentation/widgets/` for any detail-specific widgets extracted from `movie_screen.dart`
-- [ ] Update all import paths
-- [ ] Run codegen and verify
+- [x] Create `lib/features/movie_detail/presentation/widgets/` for any detail-specific widgets extracted from `movie_screen.dart`
+- [x] Update all import paths
+- [x] Run codegen and verify
 
 ### Verification
 
