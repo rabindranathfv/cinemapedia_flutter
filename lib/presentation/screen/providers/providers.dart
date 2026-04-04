@@ -13,5 +13,5 @@ export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers
 
 export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/actors_by_movie_provider.dart';
 export 'package:cinemapedia_flutter/core/presentation/providers/actors_repository_provider.dart';
-export 'search/search_movies_provider.dart';
+export 'package:cinemapedia_flutter/features/search/presentation/providers/search_movies_provider.dart';
 export 'shared_preferences/shared_preferences_provider.dart';

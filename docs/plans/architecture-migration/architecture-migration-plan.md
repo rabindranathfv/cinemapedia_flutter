@@ -1,6 +1,6 @@
 # Architecture Migration Plan — Layer-First → Feature-First Clean Architecture + Riverpod
 
-> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅, S3 ✅, S4 ✅)
+> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅, S3 ✅, S4 ✅, S5 ✅)
 
 ## Summary
 
@@ -130,7 +130,7 @@ S1 ──→ S2 ──→ S7
 | **2** | Migrate home feature             | S2     | Medium | ✅ Complete    |
 | **3** | Migrate movie detail feature     | S3     | Low    | ✅ Complete    |
 | **4** | Migrate categories feature       | S4     | Low    | ✅ Complete    |
-| **5** | Migrate search feature           | S5     | Low    | 🔲 Not started |
+| **5** | Migrate search feature           | S5     | Low    | ✅ Complete    |
 | **6** | Migrate favorites feature        | S6     | Low    | 🔲 Not started |
 | **7** | Router update & cleanup          | S7     | Low    | 🔲 Not started |
 
@@ -278,12 +278,12 @@ Create `lib/features/search/` containing search delegate and providers.
 
 ### Tasks
 
-- [ ] Create `lib/features/search/presentation/delegates/` and move:
+- [x] Create `lib/features/search/presentation/delegates/` and move:
   - `search_movie_delegate.dart`
-- [ ] Create `lib/features/search/presentation/providers/` and move:
+- [x] Create `lib/features/search/presentation/providers/` and move:
   - `search_movies_provider.dart` (+`.g.dart`)
-- [ ] Update all import paths
-- [ ] Run codegen and verify
+- [x] Update all import paths
+- [x] Run codegen and verify
 
 ### Verification
 
