@@ -6,8 +6,8 @@ export 'package:cinemapedia_flutter/core/presentation/providers/movies_repositor
 export 'package:cinemapedia_flutter/features/home/presentation/providers/movies_slideshow_provider.dart';
 export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/movies_info_provider.dart';
 export 'movies/movies_favorites_provider.dart';
-export 'movies/genres_provider.dart';
-export 'movies/movies_by_genre_provider.dart';
+export 'package:cinemapedia_flutter/features/categories/presentation/providers/genres_provider.dart';
+export 'package:cinemapedia_flutter/features/categories/presentation/providers/movies_by_genre_provider.dart';
 export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/movie_videos_provider.dart';
 export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/similar_movies_provider.dart';
 

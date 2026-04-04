@@ -1,5 +1,5 @@
 import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
-import 'package:cinemapedia_flutter/presentation/widgets/movies/movie_masonry.dart';
+import 'package:cinemapedia_flutter/features/categories/presentation/widgets/movie_masonry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';

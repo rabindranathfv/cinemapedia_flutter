@@ -1,6 +1,6 @@
 # Architecture Migration Plan — Layer-First → Feature-First Clean Architecture + Riverpod
 
-> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅, S3 ✅)
+> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅, S3 ✅, S4 ✅)
 
 ## Summary
 
@@ -129,7 +129,7 @@ S1 ──→ S2 ──→ S7
 | **1** | Extract shared code into `core/` | S1     | Medium | ✅ Complete    |
 | **2** | Migrate home feature             | S2     | Medium | ✅ Complete    |
 | **3** | Migrate movie detail feature     | S3     | Low    | ✅ Complete    |
-| **4** | Migrate categories feature       | S4     | Low    | 🔲 Not started |
+| **4** | Migrate categories feature       | S4     | Low    | ✅ Complete    |
 | **5** | Migrate search feature           | S5     | Low    | 🔲 Not started |
 | **6** | Migrate favorites feature        | S6     | Low    | 🔲 Not started |
 | **7** | Router update & cleanup          | S7     | Low    | 🔲 Not started |
@@ -252,15 +252,15 @@ Create `lib/features/categories/` containing genre browsing.
 
 ### Tasks
 
-- [ ] Create `lib/features/categories/presentation/views/` and move:
+- [x] Create `lib/features/categories/presentation/views/` and move:
   - `categories_view.dart`
-- [ ] Create `lib/features/categories/presentation/providers/` and move:
+- [x] Create `lib/features/categories/presentation/providers/` and move:
   - `genres_provider.dart` (+`.g.dart`)
   - `movies_by_genre_provider.dart` (+`.g.dart`)
-- [ ] Create `lib/features/categories/presentation/widgets/` and move:
+- [x] Create `lib/features/categories/presentation/widgets/` and move:
   - `movie_masonry.dart`
-- [ ] Update all import paths
-- [ ] Run codegen and verify
+- [x] Update all import paths
+- [x] Run codegen and verify
 
 ### Verification
 
