@@ -1,6 +1,6 @@
 # Architecture Migration Plan — Layer-First → Feature-First Clean Architecture + Riverpod
 
-> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅, S3 ✅, S4 ✅, S5 ✅)
+> **Created:** 2026-04-03 | **Status:** 🟡 IN PROGRESS (S1 ✅, S2 ✅, S3 ✅, S4 ✅, S5 ✅, S6 ✅)
 
 ## Summary
 
@@ -131,7 +131,7 @@ S1 ──→ S2 ──→ S7
 | **3** | Migrate movie detail feature     | S3     | Low    | ✅ Complete    |
 | **4** | Migrate categories feature       | S4     | Low    | ✅ Complete    |
 | **5** | Migrate search feature           | S5     | Low    | ✅ Complete    |
-| **6** | Migrate favorites feature        | S6     | Low    | 🔲 Not started |
+| **6** | Migrate favorites feature        | S6     | Low    | ✅ Complete    |
 | **7** | Router update & cleanup          | S7     | Low    | 🔲 Not started |
 
 ---
@@ -301,13 +301,13 @@ Create `lib/features/favorites/` containing favorites management.
 
 ### Tasks
 
-- [ ] Create `lib/features/favorites/presentation/views/` and move:
+- [x] Create `lib/features/favorites/presentation/views/` and move:
   - `favorites_view.dart`
-- [ ] Create `lib/features/favorites/presentation/providers/` and move:
+- [x] Create `lib/features/favorites/presentation/providers/` and move:
   - `movies_favorites_provider.dart` (+`.g.dart`)
   - `shared_preferences_provider.dart` (+`.g.dart`)
-- [ ] Update all import paths
-- [ ] Run codegen and verify
+- [x] Update all import paths
+- [x] Run codegen and verify
 
 ### Verification
 

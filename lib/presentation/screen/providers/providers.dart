@@ -5,7 +5,7 @@ export 'package:cinemapedia_flutter/features/home/presentation/providers/upcomin
 export 'package:cinemapedia_flutter/core/presentation/providers/movies_repository_provider.dart';
 export 'package:cinemapedia_flutter/features/home/presentation/providers/movies_slideshow_provider.dart';
 export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/movies_info_provider.dart';
-export 'movies/movies_favorites_provider.dart';
+export 'package:cinemapedia_flutter/features/favorites/presentation/providers/movies_favorites_provider.dart';
 export 'package:cinemapedia_flutter/features/categories/presentation/providers/genres_provider.dart';
 export 'package:cinemapedia_flutter/features/categories/presentation/providers/movies_by_genre_provider.dart';
 export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/movie_videos_provider.dart';
@@ -14,4 +14,4 @@ export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers
 export 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/actors_by_movie_provider.dart';
 export 'package:cinemapedia_flutter/core/presentation/providers/actors_repository_provider.dart';
 export 'package:cinemapedia_flutter/features/search/presentation/providers/search_movies_provider.dart';
-export 'shared_preferences/shared_preferences_provider.dart';
+export 'package:cinemapedia_flutter/features/favorites/presentation/providers/shared_preferences_provider.dart';
