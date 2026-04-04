@@ -2,8 +2,8 @@
 
 **Files:**
 
-- `lib/presentation/views/home_views/favorites_view.dart`
-- `lib/presentation/screen/providers/movies/movies_favorites_provider.dart`
+- `lib/features/favorites/presentation/screens/favorites_view.dart`
+- `lib/features/favorites/presentation/providers/movies_favorites_provider.dart`
 
 **Route:** `/favorites`
 

@@ -1,6 +1,6 @@
 # Categories Feature
 
-**File:** `lib/presentation/views/home_views/categories_view.dart`  
+**File:** `lib/features/categories/presentation/screens/categories_view.dart`  
 **Route:** `/categories`
 
 ---

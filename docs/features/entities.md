@@ -1,6 +1,6 @@
 # Domain Entities
 
-**Directory:** `lib/domain/entities/`
+**Directory:** `lib/core/domain/entities/`
 
 All entities use `@freezed` for immutable value objects with generated `copyWith`, `==`, `hashCode`, `fromJson`, and `toJson`.
 
@@ -8,7 +8,7 @@ All entities use `@freezed` for immutable value objects with generated `copyWith
 
 ## `Movie`
 
-**File:** `lib/domain/entities/movie.dart`
+**File:** `lib/core/domain/entities/movie.dart`
 
 ### Fields
 
@@ -41,7 +41,7 @@ Used for deserializing from SharedPreferences (favorites persistence).
 
 ## `Actor`
 
-**File:** `lib/domain/entities/actor.dart`
+**File:** `lib/core/domain/entities/actor.dart`
 
 ### Fields
 
@@ -56,7 +56,7 @@ Used for deserializing from SharedPreferences (favorites persistence).
 
 ## `Genre`
 
-**File:** `lib/domain/entities/genre.dart`
+**File:** `lib/core/domain/entities/genre.dart`
 
 ### Fields
 
@@ -103,7 +103,7 @@ Requires `const Genre._();` private constructor (Freezed pattern for custom meth
 
 ## `Video`
 
-**File:** `lib/domain/entities/video.dart`
+**File:** `lib/core/domain/entities/video.dart`
 
 ### Fields
 

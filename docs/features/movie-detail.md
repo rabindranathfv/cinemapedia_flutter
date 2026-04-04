@@ -1,6 +1,6 @@
 # Movie Detail Feature
 
-**File:** `lib/presentation/screen/movie/movie_screen.dart`  
+**File:** `lib/features/movie_detail/presentation/screens/movie_screen.dart`  
 **Route:** `/movie/:mid`  
 **Route name:** `'movie_screen'`
 

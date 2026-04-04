@@ -1,6 +1,6 @@
 # Infrastructure — API, Mappers & Repositories
 
-**Directory:** `lib/infraestructure/`
+**Directory:** `lib/core/data/`
 
 ---
 
@@ -34,7 +34,7 @@ The `.env` file at the project root must define `THE_MOVIEDB_KEY`.
 
 ## `MoviedbDatasource`
 
-**File:** `lib/infraestructure/datasources/moviedb_datasource.dart`  
+**File:** `lib/core/data/datasources/moviedb_datasource.dart`  
 **Implements:** `MovieDatasource`
 
 ### Dio Base Configuration
@@ -76,7 +76,7 @@ BaseOptions(
 
 ## `ActorMoviedbDatasource`
 
-**File:** `lib/infraestructure/datasources/actor_moviedb_datasource.dart`  
+**File:** `lib/core/data/datasources/actor_moviedb_datasource.dart`  
 **Implements:** `ActorsDatasource`
 
 Uses the same Dio base config as `MoviedbDatasource`.
@@ -89,11 +89,11 @@ Uses the same Dio base config as `MoviedbDatasource`.
 
 ## Mappers
 
-**Directory:** `lib/infraestructure/mappers/`
+**Directory:** `lib/core/data/mappers/`
 
 ### `MovieMapper`
 
-**File:** `lib/infraestructure/mappers/movie_mapper.dart`
+**File:** `lib/core/data/mappers/movie_mapper.dart`
 
 **`movieDBtoEntity(MovieMovieDB) → Movie`**
 
@@ -108,7 +108,7 @@ Uses the same Dio base config as `MoviedbDatasource`.
 
 ### `ActorMapper`
 
-**File:** `lib/infraestructure/mappers/actor_mapper.dart`
+**File:** `lib/core/data/mappers/actor_mapper.dart`
 
 **`castToEntity(Cast) → Actor`**
 
@@ -116,7 +116,7 @@ Uses the same Dio base config as `MoviedbDatasource`.
 
 ### `GenreMapper`
 
-**File:** `lib/infraestructure/mappers/genre_mapper.dart`
+**File:** `lib/core/data/mappers/genre_mapper.dart`
 
 **`genreDBtoEntity(GenreMovieDB) → Genre`**
 
@@ -124,7 +124,7 @@ Uses the same Dio base config as `MoviedbDatasource`.
 
 ### `VideoMapper`
 
-**File:** `lib/infraestructure/mappers/video_mapper.dart`
+**File:** `lib/core/data/mappers/video_mapper.dart`
 
 **`videoDBtoEntity(VideoMovieDB) → Video`**
 
@@ -136,7 +136,7 @@ Uses the same Dio base config as `MoviedbDatasource`.
 
 ### `MovieRepositoryImpl`
 
-**File:** `lib/infraestructure/repositories/movie_repository_impl.dart`  
+**File:** `lib/core/data/repositories/movie_repository_impl.dart`  
 **Implements:** `MoviesRepository`  
 **Constructor:** `{required MovieDatasource datasource}`
 
@@ -144,7 +144,7 @@ All methods delegate directly to `datasource.*`.
 
 ### `ActorRepositoryImpl`
 
-**File:** `lib/infraestructure/repositories/actor_repository_impl.dart`  
+**File:** `lib/core/data/repositories/actor_repository_impl.dart`  
 **Implements:** `ActorsRepository`  
 **Constructor:** `{required ActorsDatasource datasource}`
 
@@ -154,7 +154,7 @@ Delegates `getActorsByMovieId(String movieId)` to `datasource`.
 
 ## Infrastructure Models (Freezed)
 
-**Directory:** `lib/infraestructure/models/moviedb/`
+**Directory:** `lib/core/data/models/moviedb/`
 
 | File                    | Class             | Key Fields                                                                                                                                                                    |
 | ----------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |

@@ -1,6 +1,5 @@
 # State Management — Providers
 
-**Barrel export:** `lib/presentation/screen/providers/providers.dart`  
 **Framework:** Riverpod codegen (`@riverpod` / `@Riverpod`, `riverpod_annotation`)
 
 ---
@@ -15,19 +14,19 @@ All providers are generated via `riverpod_generator`. The `@Riverpod(keepAlive: 
 
 ### `movieRepositoryProvider`
 
-**File:** `lib/presentation/screen/providers/movies/movies_repository_provider.dart`  
+**File:** `lib/core/presentation/providers/movies_repository_provider.dart`  
 **Type:** `@Riverpod(keepAlive: true)` functional  
 **Returns:** `MovieRepositoryImpl(datasource: MoviedbDatasource())`
 
 ### `actorsRepositoryProvider`
 
-**File:** `lib/presentation/screen/providers/actors/actors_repository_provider.dart`  
+**File:** `lib/core/presentation/providers/actors_repository_provider.dart`  
 **Type:** `@Riverpod(keepAlive: true)` functional  
 **Returns:** `ActorRepositoryImpl(datasource: ActorMoviedbDatasource())`
 
 ### `sharedPreferencesProvider`
 
-**Type:** `@Riverpod(keepAlive: true)` async functional  
+**File:** `lib/features/favorites/presentation/providers/shared_preferences_provider.dart`  
 **Returns:** `Future<SharedPreferences>` via `SharedPreferences.getInstance()`
 
 ---

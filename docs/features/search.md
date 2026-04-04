@@ -1,6 +1,6 @@
 # Search Feature
 
-**File:** `lib/presentation/delegates/search_movie_delegate.dart`  
+**File:** `lib/features/search/presentation/delegates/search_movie_delegate.dart`  
 **Entry point:** `CustomAppbar` search icon button
 
 ---
@@ -13,7 +13,7 @@ Full-screen search overlay using Flutter's `SearchDelegate`. Supports debounced 
 
 ## `SearchMovieDelegate`
 
-**Extends:** `SearchDelegate<Movie?>`  
+**Extends:** `SearchDelegate<Movie?>`
 **`searchFieldLabel`:** `'Search movies'`
 
 ### Constructor

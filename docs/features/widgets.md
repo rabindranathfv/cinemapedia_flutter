@@ -2,8 +2,9 @@
 
 **Directories:**
 
-- `lib/presentation/widgets/movies/`
-- `lib/presentation/widgets/shared/`
+- `lib/features/home/presentation/widgets/`
+- `lib/features/categories/presentation/widgets/`
+- `lib/core/presentation/widgets/`
 
 ---
 
@@ -11,7 +12,7 @@
 
 ### `MovieHorizontalListView`
 
-**File:** `lib/presentation/widgets/movies/movie_horizontal_listview.dart`  
+**File:** `lib/features/home/presentation/widgets/movie_horizontal_list_view.dart`  
 **Type:** `StatefulWidget`
 
 **Props:**
@@ -57,7 +58,7 @@ Tap: `context.go('/movie/${movie.id}')`
 
 ### `MoviesSlideshow`
 
-**File:** `lib/presentation/widgets/movies/movies_slideshow.dart`  
+**File:** `lib/features/home/presentation/widgets/movies_slideshow.dart`  
 **Type:** `StatelessWidget`
 
 **Props:**
@@ -87,7 +88,7 @@ DecoratedBox(shadow: black45, blur:10, offset:(0,10))
 
 ### `MovieMasonry`
 
-**File:** `lib/presentation/widgets/movies/movie_masonry.dart`  
+**File:** `lib/features/categories/presentation/widgets/movie_masonry.dart`  
 **Type:** `ConsumerStatefulWidget`
 
 **Props:**
@@ -112,7 +113,7 @@ Each cell: `MoviePosterLink(movie, toggleFavorite)`
 
 ### `MoviePosterLink`
 
-**File:** `lib/presentation/widgets/movies/movie_poster_link.dart`  
+**File:** `lib/features/home/presentation/widgets/movie_poster_link.dart`  
 **Type:** `StatelessWidget`
 
 **Props:**
@@ -139,7 +140,7 @@ GestureDetector(onTap: context.push('/movie/${movie.id}'))
 
 ### `CustomAppbar`
 
-**File:** `lib/presentation/widgets/shared/custom_appbar.dart`  
+**File:** `lib/core/presentation/widgets/custom_appbar.dart`  
 **Type:** `ConsumerWidget`
 
 **Layout:**
@@ -172,7 +173,7 @@ if (movie != null && context.mounted) context.push('/movie/${movie.id}');
 
 ### `CustomBottomNavigation`
 
-**File:** `lib/presentation/widgets/shared/custom_bottom_navigation.dart`  
+**File:** `lib/core/presentation/widgets/custom_bottom_navigation.dart`  
 **Type:** `StatelessWidget`
 
 **Props:**

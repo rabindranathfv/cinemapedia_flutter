@@ -1,6 +1,6 @@
 # Home Feature
 
-**Files:** `lib/presentation/screen/movie/home_screen.dart`, `lib/presentation/views/home_views/home_view.dart`
+**Files:** `lib/features/home/presentation/screens/home_screen.dart`, `lib/features/home/presentation/screens/home_view.dart`
 
 ---
 
