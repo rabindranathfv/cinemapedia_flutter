@@ -11,15 +11,16 @@ class MovieHorizontalListView extends StatefulWidget {
   final String? title;
   final String? subtitle;
   final VoidCallback? loadNextPage;
-    final Key? listKey;
+  final Key? listKey;
 
-  const MovieHorizontalListView(
-      {super.key,
-      required this.movies,
-      this.title,
-      this.subtitle,
-      this.loadNextPage,
-      this.listKey});
+  const MovieHorizontalListView({
+    super.key,
+    required this.movies,
+    this.title,
+    this.subtitle,
+    this.loadNextPage,
+    this.listKey,
+  });
 
   @override
   State<MovieHorizontalListView> createState() =>
@@ -51,27 +52,26 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 350,
-        child: Column(
-          children: [
-            if (widget.title != null || widget.subtitle != null)
-              _Title(
-                title: widget.title,
-                subtitle: widget.subtitle,
-              ),
-            Expanded(
-                child: ListView.builder(
-                key: widget.listKey,
-                    controller: scrollController,
-                    itemCount: widget.movies.length,
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return FadeInRight(
-                          child: _Slide(movie: widget.movies[index]));
-                    }))
-          ],
-        ));
+      height: 350,
+      child: Column(
+        children: [
+          if (widget.title != null || widget.subtitle != null)
+            _Title(title: widget.title, subtitle: widget.subtitle),
+          Expanded(
+            child: ListView.builder(
+              key: widget.listKey,
+              controller: scrollController,
+              itemCount: widget.movies.length,
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return FadeInRight(child: _Slide(movie: widget.movies[index]));
+              },
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -93,11 +93,10 @@ class _Title extends StatelessWidget {
           const Spacer(),
           if (subtitle != null)
             FilledButton(
-                style: const ButtonStyle(visualDensity: VisualDensity.compact),
-                onPressed: () {},
-                child: Text(
-                  subtitle!,
-                ))
+              style: const ButtonStyle(visualDensity: VisualDensity.compact),
+              onPressed: () {},
+              child: Text(subtitle!),
+            ),
         ],
       ),
     );
@@ -128,25 +127,24 @@ class _Slide extends StatelessWidget {
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress != null) {
                     return const Padding(
-                        padding: EdgeInsets.all(1),
-                        child: Center(
-                            child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                        )));
+                      padding: EdgeInsets.all(1),
+                      child: Center(
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+                    );
                   }
 
                   return GestureDetector(
-                      onTap: () {
-                        context.go('/movie/${movie.id}');
-                      },
-                      child: FadeIn(child: child));
+                    onTap: () {
+                      context.go('/movie/${movie.id}');
+                    },
+                    child: FadeIn(child: child),
+                  );
                 },
               ),
             ),
           ),
-          const SizedBox(
-            height: 5,
-          ),
+          const SizedBox(height: 5),
           SizedBox(
             width: 150,
             child: Text(movie.title, maxLines: 2, style: textStyle.titleSmall),
@@ -156,18 +154,21 @@ class _Slide extends StatelessWidget {
             child: Row(
               children: [
                 Icon(Icons.star_rate_outlined, color: Colors.yellow.shade800),
-                const SizedBox(
-                  width: 3,
+                const SizedBox(width: 3),
+                Text(
+                  '${movie.voteAverage}',
+                  style: textStyle.bodyMedium!.copyWith(
+                    color: Colors.yellow.shade800,
+                  ),
                 ),
-                Text('${movie.voteAverage}',
-                    style: textStyle.bodyMedium!
-                        .copyWith(color: Colors.yellow.shade800)),
                 const Spacer(),
-                Text(HumanFormats.number(movie.popularity),
-                    style: textStyle.bodyMedium)
+                Text(
+                  HumanFormats.number(movie.popularity),
+                  style: textStyle.bodyMedium,
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );

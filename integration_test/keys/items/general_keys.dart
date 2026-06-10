@@ -5,6 +5,7 @@ final class _GeneralKeys {
 
   Key get bottomNav => const Key(PatrolKeys.bottomNav);
   Key get bottomNavHomeTab => const Key(PatrolKeys.bottomNavHomeTab);
-  Key get bottomNavCategoriesTab => const Key(PatrolKeys.bottomNavCategoriesTab);
+  Key get bottomNavCategoriesTab =>
+      const Key(PatrolKeys.bottomNavCategoriesTab);
   Key get bottomNavFavoritesTab => const Key(PatrolKeys.bottomNavFavoritesTab);
 }

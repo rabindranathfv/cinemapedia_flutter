@@ -53,5 +53,6 @@ final class PatrolKeys {
   static Key categoryCard(int id) => Key('$categoryCardPrefix$id');
   static Key moviePoster(int id) => Key('$moviePosterPrefix$id');
   static Key favoriteToggle(int id) => Key('$favoriteTogglePrefix$id');
-  static Key similarMovieCard(int id) => Key('$movieDetailSimilarCardPrefix$id');
+  static Key similarMovieCard(int id) =>
+      Key('$movieDetailSimilarCardPrefix$id');
 }

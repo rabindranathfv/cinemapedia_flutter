@@ -1,6 +1,6 @@
 # Patrol E2E Testing — Implementation Plan
 
-> **Created:** 2026-06-10 | **Status:** 🔄 S1 COMPLETE · S2 IN PROGRESS
+> **Created:** 2026-06-10 | **Status:** 🔄 S1-S3 COMPLETE · S4 IN PROGRESS
 > **Framework:** [Patrol](https://patrol.leancode.co/) by LeanCode
 > **References:** [Patrol docs](https://patrol.leancode.co/) · [Patrol‑Driven UI Test Architecture for Flutter (V. Bacık)](https://vbacik-10.medium.com/patrol-driven-ui-test-architecture-for-flutter-2e92923cfa49)
 
@@ -23,16 +23,16 @@ The test architecture follows a **Page Object + Chain-of-Responsibility "Flow"**
 
 ## Why Patrol over plain `integration_test`?
 
-| Need                                        | `integration_test` | Patrol |
-| ------------------------------------------- | ------------------ | ------ |
-| Tap/scroll/enter text in the Flutter UI     | ✅                 | ✅     |
-| Native permission dialogs                   | ❌                 | ✅     |
-| Toggle Wi‑Fi / cellular / dark mode         | ❌                 | ✅     |
-| Interact with notifications / WebViews      | ❌                 | ✅     |
-| Concise finders (`$('text')`)               | ❌                 | ✅     |
-| Hot restart during test dev                 | ❌                 | ✅     |
-| Test isolation + sharding                   | ⚠️ limited         | ✅     |
-| Device farms (Firebase Test Lab, BrowserStack, etc.) | ⚠️ manual | ✅     |
+| Need                                                 | `integration_test` | Patrol |
+| ---------------------------------------------------- | ------------------ | ------ |
+| Tap/scroll/enter text in the Flutter UI              | ✅                 | ✅     |
+| Native permission dialogs                            | ❌                 | ✅     |
+| Toggle Wi‑Fi / cellular / dark mode                  | ❌                 | ✅     |
+| Interact with notifications / WebViews               | ❌                 | ✅     |
+| Concise finders (`$('text')`)                        | ❌                 | ✅     |
+| Hot restart during test dev                          | ❌                 | ✅     |
+| Test isolation + sharding                            | ⚠️ limited         | ✅     |
+| Device farms (Firebase Test Lab, BrowserStack, etc.) | ⚠️ manual          | ✅     |
 
 ---
 
@@ -46,10 +46,10 @@ The test architecture follows a **Page Object + Chain-of-Responsibility "Flow"**
 
 Install and verify `patrol_cli` **first** (confirming the environment with `patrol doctor`), and **only then** add the `patrol` package to the project. These are **two separate artifacts** and must not be confused:
 
-| Artifact      | Where it lives                          | How it's installed                         |
-| ------------- | --------------------------------------- | ------------------------------------------ |
-| `patrol`      | `dev_dependencies` in `pubspec.yaml`    | `flutter pub add patrol --dev`             |
-| `patrol_cli`  | Global pub tool (**NOT** in `pubspec`)  | `dart pub global activate patrol_cli`      |
+| Artifact     | Where it lives                         | How it's installed                    |
+| ------------ | -------------------------------------- | ------------------------------------- |
+| `patrol`     | `dev_dependencies` in `pubspec.yaml`   | `flutter pub add patrol --dev`        |
+| `patrol_cli` | Global pub tool (**NOT** in `pubspec`) | `dart pub global activate patrol_cli` |
 
 ### Tasks (follow this exact order — per the official [Install Patrol](https://patrol.leancode.co/documentation) guide)
 
@@ -60,13 +60,13 @@ Install and verify `patrol_cli` **first** (confirming the environment with `patr
   flutter pub global activate patrol_cli
   ```
 - [ ] **Step 2 — Add the CLI to `PATH`** so `patrol` is callable (ensure `~/.pub-cache/bin` is on `PATH`).
-  For Android targets, also ensure the SDK env vars are set (macOS zsh example):
+      For Android targets, also ensure the SDK env vars are set (macOS zsh example):
   ```bash
   export ANDROID_HOME="$HOME/Library/Android/sdk"
   export ANDROID_SDK_ROOT="$ANDROID_HOME"
   ```
   Add them to `~/.zshrc` (or your shell profile) and reload the shell before running `patrol doctor`.
-- [ ] **Step 3 — Verify the CLI works *before* touching the project** with `patrol doctor`:
+- [ ] **Step 3 — Verify the CLI works _before_ touching the project** with `patrol doctor`:
   ```bash
   patrol --version   # prints the CLI version
   patrol doctor      # must pass for your target platform before continuing
@@ -79,7 +79,7 @@ Install and verify `patrol_cli` **first** (confirming the environment with `patr
   Expected in `pubspec.yaml`:
   ```yaml
   dev_dependencies:
-    patrol: ^3.x.x   # patrol_cli does NOT go here — it is a global tool
+    patrol: ^3.x.x # patrol_cli does NOT go here — it is a global tool
   ```
 - [ ] **Step 5 — Re-run `patrol doctor`** now that the package is present, to confirm CLI ↔ package compatibility.
 
@@ -89,15 +89,15 @@ Install and verify `patrol_cli` **first** (confirming the environment with `patr
 
 Run `patrol doctor` after **every** setup step (G1–G3). A healthy, ready-to-run environment reports all of the following. Treat any ❌ / warning as a blocker before moving on:
 
-| Check                          | Healthy output                                                        |
-| ------------------------------ | -------------------------------------------------------------------- |
-| **Patrol CLI version**         | Prints the installed `patrol_cli` version (and no "update required"). |
-| **Patrol package version**     | Resolves the `patrol` dep and shows a version compatible with the CLI. |
-| **Flutter**                    | `flutter` found on `PATH`; `flutter doctor` itself is healthy.        |
-| **Android toolchain**          | Android SDK, `adb`, and command-line tools detected; `$ANDROID_HOME` is set. |
-| **Android test runner**        | `PatrolJUnitRunner` wired in `build.gradle` (after G3).              |
-| **iOS toolchain**              | Xcode + CocoaPods detected; `RunnerUITests` target present (after G3). |
-| **Connected devices**          | At least one emulator/simulator or physical device (`patrol devices`). |
+| Check                      | Healthy output                                                               |
+| -------------------------- | ---------------------------------------------------------------------------- |
+| **Patrol CLI version**     | Prints the installed `patrol_cli` version (and no "update required").        |
+| **Patrol package version** | Resolves the `patrol` dep and shows a version compatible with the CLI.       |
+| **Flutter**                | `flutter` found on `PATH`; `flutter doctor` itself is healthy.               |
+| **Android toolchain**      | Android SDK, `adb`, and command-line tools detected; `$ANDROID_HOME` is set. |
+| **Android test runner**    | `PatrolJUnitRunner` wired in `build.gradle` (after G3).                      |
+| **iOS toolchain**          | Xcode + CocoaPods detected; `RunnerUITests` target present (after G3).       |
+| **Connected devices**      | At least one emulator/simulator or physical device (`patrol devices`).       |
 
 ```bash
 patrol doctor            # full report
@@ -125,7 +125,7 @@ Declare the Patrol app id / bundle config so the **CLI** can build native test b
   ```yaml
   patrol:
     app_name: <App Name>
-    test_directory: integration_test   # Patrol defaults to patrol_test/; this plan uses integration_test/
+    test_directory: integration_test # Patrol defaults to patrol_test/; this plan uses integration_test/
     android:
       package_name: <com.example.app>
     ios:
@@ -153,6 +153,7 @@ Wire Patrol's native test runners into Android and iOS so `integration_test` can
 ### Tasks — Android
 
 - [ ] In `android/app/src/androidTest/java/<pkg path>/MainActivityTest.java` create:
+
   ```java
   package <com.example.app>;
   import androidx.test.platform.app.InstrumentationRegistry;
@@ -163,6 +164,7 @@ Wire Patrol's native test runners into Android and iOS so `integration_test` can
   @RunWith(PatrolTestRunner.class)
   public class MainActivityTest {}
   ```
+
 - [ ] In `android/app/build.gradle` (`defaultConfig`):
   ```gradle
   testInstrumentationRunner "pl.leancode.patrol.PatrolJUnitRunner"
@@ -179,6 +181,7 @@ Wire Patrol's native test runners into Android and iOS so `integration_test` can
 - [ ] Open `ios/Runner.xcworkspace` in Xcode.
 - [ ] Add a **UI Testing Bundle** target named `RunnerUITests` (if not present).
 - [ ] Replace the generated UI-test file with the Patrol iOS macro runner (Objective-C):
+
   ```objective-c
   @import XCTest;
   @import patrol;
@@ -186,6 +189,7 @@ Wire Patrol's native test runners into Android and iOS so `integration_test` can
 
   PATROL_INTEGRATION_TEST_IOS_RUNNER(RunnerUITests)
   ```
+
 - [ ] Ensure `RunnerUITests` is included in **Runner scheme → TestAction → Testables**.
 - [ ] Add `target 'RunnerUITests' do inherit! :complete end` inside `target 'Runner'` in `ios/Podfile`.
 - [ ] Ensure the iOS deployment target is **≥ 13.0**.
@@ -228,6 +232,7 @@ integration_test/
 ### Tasks
 
 - [ ] **Keys hub** — central registry using `part`/`part of`:
+
   ```dart
   // keys/application_keys.dart
   part 'items/general_keys.dart';
@@ -241,6 +246,7 @@ integration_test/
 
   typedef K = ApplicationKeys; // usage: K.home.view
   ```
+
   ```dart
   // keys/items/home_keys.dart
   part of '../application_keys.dart';
@@ -250,6 +256,7 @@ integration_test/
     final Key view = const Key('home_view');
   }
   ```
+
 - [ ] **Shared test config** — a `patrolTest` wrapper that pumps the app and applies common setup (DI overrides, native permission handling):
   ```dart
   // config/patrol_test_config.dart
@@ -261,6 +268,7 @@ integration_test/
   }
   ```
 - [ ] **Page object (Robot) pattern** — encapsulate finders + actions per screen:
+
   ```dart
   // page_objects/home_robot.dart
   final class HomeRobot {
@@ -271,7 +279,9 @@ integration_test/
     Future<void> openFirstMovie() async => $(K.home.firstCard).tap();
   }
   ```
+
 - [ ] **Flow base class** (Chain of Responsibility):
+
   ```dart
   // flows/base_test_scenario.dart
   abstract base class BaseTestScenario {
@@ -372,29 +382,29 @@ Standardize how tests are executed locally and in CI.
 
 ## Project considerations (read first)
 
-| Concern                     | Decision for this plan                                                                                                                                                |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **`.env` / TMDB key**       | Tests boot the real app, which calls `dotenv.load('.env')`. The `.env` must be present in the test bundle (already a declared asset). Keep a CI secret for the key.   |
-| **Real API vs mocked**      | **Default: mock the repositories** via `ProviderScope` overrides for deterministic, offline, fast tests. Keep a small **smoke suite** that hits the real TMDB API.    |
-| **State isolation**         | Clear `SharedPreferences` (favorites) between favorites tests so runs are repeatable.                                                                                 |
-| **Keys**                    | The app currently has **almost no widget `Key`s**; `S2` adds them feature-by-feature.                                                                                 |
-| **Entry point**             | A dedicated test app builder wraps `MainApp` with overridable `ProviderScope` (no `BackgroundDetector` noise).                                                        |
+| Concern                | Decision for this plan                                                                                                                                              |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`.env` / TMDB key**  | Tests boot the real app, which calls `dotenv.load('.env')`. The `.env` must be present in the test bundle (already a declared asset). Keep a CI secret for the key. |
+| **Real API vs mocked** | **Default: mock the repositories** via `ProviderScope` overrides for deterministic, offline, fast tests. Keep a small **smoke suite** that hits the real TMDB API.  |
+| **State isolation**    | Clear `SharedPreferences` (favorites) between favorites tests so runs are repeatable.                                                                               |
+| **Keys**               | The app currently has **almost no widget `Key`s**; `S2` adds them feature-by-feature.                                                                               |
+| **Entry point**        | A dedicated test app builder wraps `MainApp` with overridable `ProviderScope` (no `BackgroundDetector` noise).                                                      |
 
 ---
 
 ## Slice Overview
 
-| Slice  | Description                                  | Depends on | Risk   |
-| ------ | -------------------------------------------- | ---------- | ------ |
-| **S1** | Install + native config (apply G1–G3)        | —          | Medium |
-| **S2** | Add `Key`s to feature widgets (apply G5)     | S1         | Low    |
-| **S3** | Test scaffolding: keys hub, robots, flows, config, mock overrides (apply G4) | S1 | Medium |
-| **S4** | Smoke test: app boots, 3 tabs reachable       | S3         | Low    |
-| **S5** | Home feature E2E                              | S4         | Low    |
-| **S6** | Movie detail E2E + navigation/back            | S5         | Low    |
-| **S7** | Search feature E2E (text entry + results)     | S4         | Medium |
-| **S8** | Categories + Favorites E2E (persistence)      | S4         | Medium |
-| **S9** | Native interactions + CI/CD (apply G6)        | S5–S8      | Medium |
+| Slice  | Description                                                                  | Depends on | Risk   |
+| ------ | ---------------------------------------------------------------------------- | ---------- | ------ |
+| **S1** | Install + native config (apply G1–G3)                                        | —          | Medium |
+| **S2** | Add `Key`s to feature widgets (apply G5)                                     | S1         | Low    |
+| **S3** | Test scaffolding: keys hub, robots, flows, config, mock overrides (apply G4) | S1         | Medium |
+| **S4** | Smoke test: app boots, 3 tabs reachable                                      | S3         | Low    |
+| **S5** | Home feature E2E                                                             | S4         | Low    |
+| **S6** | Movie detail E2E + navigation/back                                           | S5         | Low    |
+| **S7** | Search feature E2E (text entry + results)                                    | S4         | Medium |
+| **S8** | Categories + Favorites E2E (persistence)                                     | S4         | Medium |
+| **S9** | Native interactions + CI/CD (apply G6)                                       | S5–S8      | Medium |
 
 ```
 S1 → S2 → S3 → S4 ──┬── S5 → S6 ──┐
@@ -465,17 +475,17 @@ Stand up the reusable architecture plus mock overrides so tests are fast and off
 
 ### Tasks
 
-- [ ] Apply **G4** scaffolding (`config/`, `keys/`, `page_objects/`, `flows/`).
-- [ ] `config/test_app.dart` — build `MainApp` inside an overridable `ProviderScope`:
+- [x] Apply **G4** scaffolding (`config/`, `keys/`, `page_objects/`, `flows/`).
+- [x] `config/test_app.dart` — build `MainApp` inside an overridable `ProviderScope`:
   ```dart
   Widget buildTestApp({List<Override> overrides = const []}) =>
       ProviderScope(overrides: overrides, child: const MainApp());
   ```
-- [ ] Create **fake repositories** implementing `MoviesRepository` / `ActorsRepository` returning fixture data (a handful of `Movie`, `Actor`, `Genre`, `Video`).
-- [ ] Override `movieRepositoryProvider` / `actorsRepositoryProvider` in the test config so no network is hit.
-- [ ] Add a `SharedPreferences.setMockInitialValues({})` helper for favorites isolation.
-- [ ] Create page-object robots: `HomeRobot`, `MovieDetailRobot`, `SearchRobot`, `CategoriesRobot`, `FavoritesRobot`.
-- [ ] Create `flows/base_test_scenario.dart` and one example scenario.
+- [x] Create **fake repositories** implementing `MoviesRepository` / `ActorsRepository` returning fixture data (a handful of `Movie`, `Actor`, `Genre`, `Video`).
+- [x] Override `movieRepositoryProvider` / `actorsRepositoryProvider` in the test config so no network is hit.
+- [x] Add a `SharedPreferences.setMockInitialValues({})` helper for favorites isolation.
+- [x] Create page-object robots: `HomeRobot`, `MovieDetailRobot`, `SearchRobot`, `CategoriesRobot`, `FavoritesRobot`.
+- [x] Create `flows/base_test_scenario.dart` and one example scenario.
 
 ### Verification
 
@@ -612,14 +622,14 @@ Exercise Patrol's native powers and automate runs.
 
 ## Risk Mitigation
 
-| Risk                                              | Impact                  | Mitigation                                                                              |
-| ------------------------------------------------- | ----------------------- | -------------------------------------------------------------------------------------- |
-| Native runner snippets differ per Patrol version  | Build fails             | Always copy the exact code from docs matching `patrol --version`; run `patrol doctor`.  |
-| Tests hit real TMDB → flaky/slow/rate-limited     | Flaky CI                | Mock repositories via `ProviderScope` overrides; keep real-API tests in a tiny smoke set. |
-| `.env` missing in test bundle                     | App fails to boot       | Keep `.env` as a declared asset; inject the key from a CI secret.                       |
-| Favorites state leaks between tests               | Order-dependent fails   | `SharedPreferences.setMockInitialValues({})` before each favorites test.               |
-| Missing widget keys → brittle text finders        | Flaky selectors         | Complete `S2` before writing assertions; resolve all anchors from the keys hub.         |
-| iOS UI Test target misconfigured                  | iOS tests won't run     | Verify the `RunnerUITests` target + deployment target ≥ 13 in Xcode; `pod install`.     |
+| Risk                                             | Impact                | Mitigation                                                                                |
+| ------------------------------------------------ | --------------------- | ----------------------------------------------------------------------------------------- |
+| Native runner snippets differ per Patrol version | Build fails           | Always copy the exact code from docs matching `patrol --version`; run `patrol doctor`.    |
+| Tests hit real TMDB → flaky/slow/rate-limited    | Flaky CI              | Mock repositories via `ProviderScope` overrides; keep real-API tests in a tiny smoke set. |
+| `.env` missing in test bundle                    | App fails to boot     | Keep `.env` as a declared asset; inject the key from a CI secret.                         |
+| Favorites state leaks between tests              | Order-dependent fails | `SharedPreferences.setMockInitialValues({})` before each favorites test.                  |
+| Missing widget keys → brittle text finders       | Flaky selectors       | Complete `S2` before writing assertions; resolve all anchors from the keys hub.           |
+| iOS UI Test target misconfigured                 | iOS tests won't run   | Verify the `RunnerUITests` target + deployment target ≥ 13 in Xcode; `pod install`.       |
 
 ---
 

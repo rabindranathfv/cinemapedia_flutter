@@ -40,7 +40,7 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
         ),
       ),
       body: movies.isEmpty
-            ? Center(
+          ? Center(
               key: const Key(PatrolKeys.favoritesEmptyState),
               child: Container(
                 decoration: BoxDecoration(
