@@ -31,6 +31,15 @@ dev_dependencies:
   json_serializable: ^6.11.1
   riverpod_generator: ^4.0.0+1
   riverpod_lint: ^3.0.0-dev.4
+  patrol: ^4.6.1
+
+patrol:
+  app_name: Cinemapedia
+  test_directory: integration_test
+  android:
+    package_name: com.example.cinemapedia_flutter
+  ios:
+    bundle_id: com.example.cinemapediaFlutter
 
 flutter:
   uses-material-design: true
