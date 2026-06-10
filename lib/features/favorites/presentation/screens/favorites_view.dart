@@ -1,4 +1,5 @@
 import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/presentation/testing/patrol_keys.dart';
 import 'package:cinemapedia_flutter/features/categories/presentation/widgets/movie_masonry.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -30,6 +31,7 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
         .getFavoriteMovies();
 
     return Scaffold(
+      key: const Key(PatrolKeys.favoritesView),
       appBar: AppBar(
         title: const Text('Favorites'),
         leading: IconButton(
@@ -38,7 +40,8 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
         ),
       ),
       body: movies.isEmpty
-          ? Center(
+            ? Center(
+              key: const Key(PatrolKeys.favoritesEmptyState),
               child: Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey, width: 2),
@@ -70,6 +73,7 @@ class _FavoritesViewState extends ConsumerState<FavoritesView> {
               ),
             )
           : MovieMasonry(
+              key: const Key(PatrolKeys.favoritesGrid),
               movies: movies,
               onMoviesLoaded: (List<Movie> movies) {
                 ref.read(favoritesMoviesProvider.notifier).loadFromPrefs();

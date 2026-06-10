@@ -1,4 +1,5 @@
 import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/presentation/testing/patrol_keys.dart';
 import 'package:cinemapedia_flutter/features/home/presentation/widgets/movie_poster_link.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -33,6 +34,7 @@ class _MovieMasonryState extends ConsumerState<MovieMasonry> {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0),
       child: MasonryGridView.count(
+        key: const Key(PatrolKeys.favoritesGrid),
         crossAxisCount: 3,
         mainAxisSpacing: 8,
         crossAxisSpacing: 8,

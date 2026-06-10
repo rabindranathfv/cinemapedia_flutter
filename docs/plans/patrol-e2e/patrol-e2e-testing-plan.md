@@ -1,6 +1,6 @@
 # Patrol E2E Testing — Implementation Plan
 
-> **Created:** 2026-06-10 | **Status:** 🔲 NOT STARTED
+> **Created:** 2026-06-10 | **Status:** 🔄 S1 COMPLETE · S2 IN PROGRESS
 > **Framework:** [Patrol](https://patrol.leancode.co/) by LeanCode
 > **References:** [Patrol docs](https://patrol.leancode.co/) · [Patrol‑Driven UI Test Architecture for Flutter (V. Bacık)](https://vbacik-10.medium.com/patrol-driven-ui-test-architecture-for-flutter-2e92923cfa49)
 
@@ -412,8 +412,8 @@ Get Patrol building and running an empty test on this app.
 
 ### Tasks
 
-- [ ] Apply **G1** (install `patrol` + `patrol_cli`).
-- [ ] Apply **G2** with this app's ids:
+- [x] Apply **G1** (install `patrol` + `patrol_cli`).
+- [x] Apply **G2** with this app's ids:
   ```yaml
   patrol:
     app_name: Cinemapedia
@@ -423,9 +423,9 @@ Get Patrol building and running an empty test on this app.
     ios:
       bundle_id: com.example.cinemapediaFlutter
   ```
-- [ ] Apply **G3** (Android `MainActivityTest`, gradle runner, iOS `RunnerUITests`).
-- [ ] Confirm iOS deployment target ≥ 13.0 (already bumped in recent platform commit).
-- [ ] Add `integration_test/example_test.dart` that pumps `MainApp` and asserts it builds.
+- [x] Apply **G3** (Android `MainActivityTest`, gradle runner, iOS `RunnerUITests`).
+- [x] Confirm iOS deployment target ≥ 13.0 (already bumped in recent platform commit).
+- [x] Add `integration_test/example_test.dart` that pumps `MainApp` and asserts it builds.
 
 ### Verification
 
@@ -442,13 +442,13 @@ Make every screen and key interaction point findable.
 
 ### Tasks
 
-- [ ] Create the keys hub (`integration_test/keys/`) with per-feature part files: `home`, `movie_detail`, `categories`, `search`, `favorites`, `general`.
-- [ ] **Home** (`features/home/.../screens/home_view.dart`): key the root view, the slideshow, each `MovieHorizontalListView`, and movie cards (`Key('movie_card_$id')`).
-- [ ] **Bottom nav** (`core/.../custom_bottom_navigation.dart`): key each tab item.
-- [ ] **Movie detail** (`features/movie_detail/.../movie_screen.dart`): key the root, the favorite button, cast list, trailers section, similar list.
-- [ ] **Search** (`features/search/.../search_movie_delegate.dart` + `custom_appbar.dart`): key the search icon, the text field, result tiles.
-- [ ] **Categories** (`features/categories/.../categories_view.dart`): key genre cards and the movie grid.
-- [ ] **Favorites** (`features/favorites/.../favorites_view.dart`): key the empty state, the masonry grid, the favorite toggle.
+- [x] Create the keys hub (`integration_test/keys/`) with per-feature part files: `home`, `movie_detail`, `categories`, `search`, `favorites`, `general`.
+- [x] **Home** (`features/home/.../screens/home_view.dart`): key the root view, the slideshow, each `MovieHorizontalListView`, and movie cards (`Key('movie_card_$id')`).
+- [x] **Bottom nav** (`core/.../custom_bottom_navigation.dart`): key each tab item.
+- [x] **Movie detail** (`features/movie_detail/.../movie_screen.dart`): key the root, the favorite button, cast list, trailers section, similar list.
+- [x] **Search** (`features/search/.../search_movie_delegate.dart` + `custom_appbar.dart`): key the search icon, the text field, result tiles.
+- [x] **Categories** (`features/categories/.../categories_view.dart`): key genre cards and the movie grid.
+- [x] **Favorites** (`features/favorites/.../favorites_view.dart`): key the empty state, the masonry grid, the favorite toggle.
 
 ### Verification
 

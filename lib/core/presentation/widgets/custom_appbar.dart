@@ -3,6 +3,7 @@ import 'package:cinemapedia_flutter/features/search/presentation/delegates/searc
 import 'package:cinemapedia_flutter/features/search/presentation/providers/search_movies_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:cinemapedia_flutter/core/presentation/testing/patrol_keys.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomAppbar extends ConsumerWidget {
@@ -26,6 +27,7 @@ class CustomAppbar extends ConsumerWidget {
               Text('Cinemapedia', style: titleStyle),
               const Spacer(),
               IconButton(
+                key: const Key(PatrolKeys.searchButton),
                 onPressed: () async {
                   final searchQuery = ref.read(searchQueryProvider);
                   final searchedMovies = ref.read(searchMoviesProvider);

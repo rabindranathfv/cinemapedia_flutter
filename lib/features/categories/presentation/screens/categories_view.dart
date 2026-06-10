@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:cinemapedia_flutter/core/domain/entities/genre.dart';
 import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/presentation/testing/patrol_keys.dart';
 import 'package:cinemapedia_flutter/features/categories/presentation/providers/genres_provider.dart';
 import 'package:cinemapedia_flutter/features/categories/presentation/providers/movies_by_genre_provider.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +38,7 @@ class _CategoriesViewState extends ConsumerState<CategoriesView> {
     // No genre selected → show the genre grid
     if (_selectedGenreId == null) {
       return Scaffold(
+        key: const Key(PatrolKeys.categoriesView),
         body: CustomScrollView(
           slivers: [
             SliverAppBar(
@@ -64,6 +66,7 @@ class _CategoriesViewState extends ConsumerState<CategoriesView> {
             SliverPadding(
               padding: const EdgeInsets.all(12),
               sliver: SliverGrid(
+                key: const Key(PatrolKeys.categoriesGrid),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
                   mainAxisSpacing: 12,
@@ -76,6 +79,7 @@ class _CategoriesViewState extends ConsumerState<CategoriesView> {
                     delay: Duration(milliseconds: index * 50),
                     duration: const Duration(milliseconds: 400),
                     child: _GenreCard(
+                      cardKey: PatrolKeys.categoryCard(genre.id),
                       genre: genre,
                       onTap: () {
                         setState(() => _selectedGenreId = genre.id);
@@ -100,6 +104,7 @@ class _CategoriesViewState extends ConsumerState<CategoriesView> {
     final movies = moviesByGenre[_selectedGenreId] ?? [];
 
     return Scaffold(
+      key: const Key(PatrolKeys.categoryDetailView),
       body: CustomScrollView(
         slivers: [
           // Hero header with genre gradient
@@ -152,6 +157,7 @@ class _CategoriesViewState extends ConsumerState<CategoriesView> {
             SliverPadding(
               padding: const EdgeInsets.symmetric(horizontal: 12),
               sliver: SliverGrid(
+                key: const Key(PatrolKeys.categoryMoviesGrid),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   mainAxisSpacing: 10,
@@ -189,8 +195,9 @@ class _CategoriesViewState extends ConsumerState<CategoriesView> {
 class _GenreCard extends StatelessWidget {
   final Genre genre;
   final VoidCallback onTap;
+  final Key? cardKey;
 
-  const _GenreCard({required this.genre, required this.onTap});
+  const _GenreCard({required this.genre, required this.onTap, this.cardKey});
 
   @override
   Widget build(BuildContext context) {
@@ -198,6 +205,7 @@ class _GenreCard extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
+        key: cardKey,
         onTap: onTap,
         child: Container(
           decoration: BoxDecoration(

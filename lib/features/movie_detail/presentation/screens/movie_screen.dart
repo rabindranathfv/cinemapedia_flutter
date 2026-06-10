@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/presentation/testing/patrol_keys.dart';
 import 'package:cinemapedia_flutter/core/domain/entities/video.dart';
 import 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/movies_info_provider.dart';
 import 'package:cinemapedia_flutter/features/movie_detail/presentation/providers/actors_by_movie_provider.dart';
@@ -41,6 +42,7 @@ class _MovieScreenState extends ConsumerState<MovieScreen> {
       );
     }
     return Scaffold(
+      key: const Key(PatrolKeys.movieDetailView),
       body: CustomScrollView(
         physics: const ClampingScrollPhysics(),
         slivers: [
@@ -167,7 +169,7 @@ class _MovieDetails extends StatelessWidget {
 
 class _ActorsByMovie extends ConsumerWidget {
   final String movieId;
-  const _ActorsByMovie({super.key, required this.movieId});
+  const _ActorsByMovie({required this.movieId});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -179,6 +181,7 @@ class _ActorsByMovie extends ConsumerWidget {
 
     final actorsMovie = actors[movieId];
     return SizedBox(
+      key: const Key(PatrolKeys.movieDetailActorsList),
       height: 250,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
@@ -319,6 +322,7 @@ class _TrailersSection extends ConsumerWidget {
           SizedBox(
             height: 175,
             child: ListView.builder(
+              key: const Key(PatrolKeys.movieDetailTrailersList),
               padding: const EdgeInsets.symmetric(horizontal: 12),
               scrollDirection: Axis.horizontal,
               itemCount: trailers.length,
@@ -601,6 +605,7 @@ class _SimilarMoviesSection extends ConsumerWidget {
           SizedBox(
             height: 250,
             child: ListView.builder(
+              key: const Key(PatrolKeys.movieDetailSimilarList),
               padding: const EdgeInsets.symmetric(horizontal: 12),
               scrollDirection: Axis.horizontal,
               itemCount: displayMovies.length,
@@ -626,6 +631,7 @@ class _SimilarMovieCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      key: PatrolKeys.similarMovieCard(movie.id),
       onTap: () => context.push('/movie/${movie.id}'),
       child: Container(
         width: 130,
@@ -775,6 +781,7 @@ class _CustomSliverAppBar extends StatelessWidget {
       actions: [
         (!isFavorite)
             ? IconButton(
+                key: const Key(PatrolKeys.movieDetailFavoriteButton),
                 onPressed: () async {
                   ref
                       .read(favoritesMoviesProvider.notifier)
@@ -783,6 +790,7 @@ class _CustomSliverAppBar extends StatelessWidget {
                 icon: const Icon(Icons.favorite_outline),
               )
             : IconButton(
+                key: const Key(PatrolKeys.movieDetailFavoriteButton),
                 onPressed: () async {
                   ref
                       .read(favoritesMoviesProvider.notifier)

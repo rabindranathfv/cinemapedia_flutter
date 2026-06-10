@@ -1,4 +1,5 @@
 import 'package:cinemapedia_flutter/config/helpers/human_formats.dart';
+import 'package:cinemapedia_flutter/core/presentation/testing/patrol_keys.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -10,13 +11,15 @@ class MovieHorizontalListView extends StatefulWidget {
   final String? title;
   final String? subtitle;
   final VoidCallback? loadNextPage;
+    final Key? listKey;
 
   const MovieHorizontalListView(
       {super.key,
       required this.movies,
       this.title,
       this.subtitle,
-      this.loadNextPage});
+      this.loadNextPage,
+      this.listKey});
 
   @override
   State<MovieHorizontalListView> createState() =>
@@ -58,6 +61,7 @@ class _MovieHorizontalListViewState extends State<MovieHorizontalListView> {
               ),
             Expanded(
                 child: ListView.builder(
+                key: widget.listKey,
                     controller: scrollController,
                     itemCount: widget.movies.length,
                     scrollDirection: Axis.horizontal,
@@ -75,7 +79,7 @@ class _Title extends StatelessWidget {
   final String? title;
   final String? subtitle;
 
-  const _Title({super.key, this.title, this.subtitle});
+  const _Title({this.title, this.subtitle});
 
   @override
   Widget build(BuildContext context) {
@@ -108,6 +112,7 @@ class _Slide extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyle = Theme.of(context).textTheme;
     return Container(
+      key: PatrolKeys.movieCard(movie.id),
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

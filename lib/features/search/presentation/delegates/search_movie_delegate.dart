@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:animate_do/animate_do.dart';
-import 'package:cinemapedia_flutter/config/helpers/human_formats.dart';
 import 'package:cinemapedia_flutter/core/domain/entities/movie.dart';
+import 'package:cinemapedia_flutter/core/presentation/testing/patrol_keys.dart';
 import 'package:flutter/material.dart';
 
 typedef SearchMoviesCallback = Future<List<Movie>> Function(String query);
@@ -51,7 +51,10 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
         }
 
         if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Center(child: Text('No movies found'));
+          return const Center(
+            key: Key(PatrolKeys.searchNoResults),
+            child: Text('No movies found'),
+          );
         }
 
         final movies = snapshot.data ?? [];
@@ -59,6 +62,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
         return ListView.builder(
           itemCount: movies.length,
           itemBuilder: (context, index) => ListTile(
+            key: PatrolKeys.searchResultTile(movies[index].id),
             leading: Image.network(movies[index].posterPath),
             title: Text(movies[index].title),
             subtitle: Text(movies[index].releaseDate.toString()),
@@ -126,6 +130,7 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
 
     if (query.isEmpty) {
       return Center(
+        key: const Key(PatrolKeys.searchStartState),
         child: Container(
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey, width: 2),
@@ -153,77 +158,5 @@ class SearchMovieDelegate extends SearchDelegate<Movie?> {
     }
 
     return _buildResultsAndSuggestions(debounceMovies.stream, initialMovies);
-  }
-}
-
-class _MovieItem extends StatelessWidget {
-  final Movie movie;
-  final Function onMovieSelected;
-
-  const _MovieItem({required this.movie, required this.onMovieSelected});
-
-  @override
-  Widget build(BuildContext context) {
-    final textStyles = Theme.of(context).textTheme;
-    final size = MediaQuery.of(context).size;
-
-    return GestureDetector(
-      onTap: () {
-        onMovieSelected(context, movie);
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-        child: Row(
-          children: [
-            SizedBox(
-              width: size.width * 0.2,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: Image.network(
-                  movie.posterPath,
-                  loadingBuilder: (context, child, loadingProgress) =>
-                      FadeIn(child: child),
-                  errorBuilder: (context, error, stackTrace) =>
-                      const Icon(Icons.movie_outlined, size: 40),
-                ),
-              ),
-            ),
-            const SizedBox(width: 10),
-
-            SizedBox(
-              width: size.width * 0.7,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(movie.title, style: textStyles.titleMedium),
-                  Text(
-                    movie.releaseDate.year.toString(),
-                    style: textStyles.titleSmall,
-                  ),
-                  (movie.overview.length > 100)
-                      ? Text('${movie.overview.substring(0, 100)}...')
-                      : Text(movie.overview),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.star_half_rounded,
-                        color: Colors.yellow.shade800,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        HumanFormats.number(movie.voteAverage),
-                        style: textStyles.bodyMedium!.copyWith(
-                          color: Colors.yellow.shade900,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }

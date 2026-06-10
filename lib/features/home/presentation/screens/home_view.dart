@@ -5,6 +5,7 @@ import 'package:cinemapedia_flutter/features/home/presentation/providers/upcomin
 import 'package:cinemapedia_flutter/features/home/presentation/providers/movies_slideshow_provider.dart';
 import 'package:cinemapedia_flutter/features/home/presentation/widgets/movie_horizontal_list_view.dart';
 import 'package:cinemapedia_flutter/features/home/presentation/widgets/movies_slideshow.dart';
+import 'package:cinemapedia_flutter/core/presentation/testing/patrol_keys.dart';
 import 'package:cinemapedia_flutter/core/presentation/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,6 +37,7 @@ class HomeViewState extends ConsumerState<HomeView> {
     final upComingMovies = ref.watch(upcomingMoviesProvider);
 
     return CustomScrollView(
+      key: const Key(PatrolKeys.homeView),
       slivers: [
         const SliverAppBar(
           floating: true,
@@ -46,8 +48,13 @@ class HomeViewState extends ConsumerState<HomeView> {
             return Column(
               children: [
                 const SizedBox(height: 5),
-                MoviesSlideshow(movies: playingMoviesSlide),
+                MoviesSlideshow(
+                  key: const Key(PatrolKeys.homeSlideshow),
+                  movies: playingMoviesSlide,
+                ),
                 MovieHorizontalListView(
+                  key: const Key(PatrolKeys.homeNowPlayingList),
+                  listKey: const Key(PatrolKeys.homeNowPlayingList),
                   movies: playingMovies,
                   title: 'In Cinemas',
                   subtitle: 'Top Movies',
@@ -56,6 +63,8 @@ class HomeViewState extends ConsumerState<HomeView> {
                       .loadNextPage(),
                 ),
                 MovieHorizontalListView(
+                  key: const Key(PatrolKeys.homeUpcomingList),
+                  listKey: const Key(PatrolKeys.homeUpcomingList),
                   movies: upComingMovies,
                   title: 'Comming Soon',
                   subtitle: 'The next Month',
@@ -63,12 +72,16 @@ class HomeViewState extends ConsumerState<HomeView> {
                       ref.read(upcomingMoviesProvider.notifier).loadNextPage(),
                 ),
                 MovieHorizontalListView(
+                  key: const Key(PatrolKeys.homePopularList),
+                  listKey: const Key(PatrolKeys.homePopularList),
                   movies: popularMovies,
                   title: 'Popular',
                   loadNextPage: () =>
                       ref.read(popularMoviesProvider.notifier).loadNextPage(),
                 ),
                 MovieHorizontalListView(
+                  key: const Key(PatrolKeys.homeTopRatedList),
+                  listKey: const Key(PatrolKeys.homeTopRatedList),
                   movies: topRatedMovies,
                   title: 'Best calification',
                   subtitle: 'from all times',
